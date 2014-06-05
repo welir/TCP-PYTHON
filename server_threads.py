@@ -55,7 +55,7 @@ class SessionData:
         except sqlite3.DatabaseError:
             print(self.ip + '---' + "Error:", sqlite3.DatabaseError)
         else:
-            print(self.ip + '---' + "Запись данных в базу: Ок")
+            print(self.ip + '---' + "Writing to base ... Ок")
 
 
 # Our thread class:
