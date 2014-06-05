@@ -12,7 +12,7 @@ import time
 import sys
 
 #Server options
-host = '192.168.1.11'
+host = 'localhost'
 port = 1800
 
 # We'll pickle a list of numbers:
