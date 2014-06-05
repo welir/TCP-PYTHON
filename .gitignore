@@ -200,7 +200,7 @@ var/
 sdist/
 develop-eggs/
 .installed.cfg
-
+*.xml
 # Installer logs
 pip-log.txt
 
