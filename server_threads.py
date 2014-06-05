@@ -13,7 +13,7 @@ import threading
 import time
 
 
-#Server options
+# Server options
 host = '192.168.0.61'
 port = 1800
 
@@ -21,7 +21,6 @@ port = 1800
 
 
 class SessionData:
-
     client_name = 'unknown'
     ip = '127.0.0.1'
     dt = datetime.datetime.now
@@ -29,12 +28,11 @@ class SessionData:
 
     def parse_inp_str(self, inp_str):
         if inp_str.find('pc_name', 0, len(inp_str)) != -1:
+            self.client_name = inp_str[inp_str.find('pc_name:', 0) + 8: inp_str.find('ip:', 0)]
 
-            self.client_name = inp_str[inp_str.find('pc_name:', 0) + 8 : inp_str.find('ip:', 0)]
+            self.ip = inp_str[inp_str.find('ip:', 0) + 3: inp_str.find('dt:', 0)]
 
-            self.ip          = inp_str[inp_str.find('ip:', 0) + 3       : inp_str.find('dt:', 0)]
-
-            self.dt          = inp_str[inp_str.find('dt:', 0) + 3       :]
+            self.dt = inp_str[inp_str.find('dt:', 0) + 3:]
 
     def sql_ins_session(self):
         try:
@@ -43,42 +41,49 @@ class SessionData:
             c.execute('''INSERT INTO SES VALUES(:s1,:s2,:s3)''', (self.client_name, self.ip, self.dt))
             conn.commit()
             conn.close()
-        except Exception:
-            print("Ошибка базы данных")
+        except sqlite3.DatabaseError:
+            print("Database Error" )
 
     def sql_ins_data(self):
         try:
             conn = sqlite3.connect('sessions.db')
             c = conn.cursor()
-            c.execute('''INSERT INTO DATA(dt,data) VALUES(:d2,:d3)''', ((datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'), self.data)))
+            c.execute('''INSERT INTO DATA(dt,data) VALUES(:d2,:d3)''',
+                      ((datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'), self.data)))
             conn.commit()
             conn.close()
-        except sqlite3.Exception:
-            print(self.ip + '---' + "Ошибка:", sqlite3.Exception)
+        except sqlite3.DatabaseError:
+            print(self.ip + '---' + "Error:", sqlite3.DatabaseError)
         else:
             print(self.ip + '---' + "Запись данных в базу: Ок")
+
 
 # Our thread class:
 class ClientThread(threading.Thread):
     sess = SessionData()
-
+    clients = []
     # Override Thread's __init__ method to accept the parameters needed:
 
     def __init__(self, channel, details):
         self.channel = channel
         self.details = details
+        self.killed = False
+        self.thread = threading.current_thread()
         threading.Thread.__init__(self)
 
+    def kill(self):
+        self.killed = True
+
     def run(self):
-            #self.get_session_info()
-            try:
-                while True:
-                    if self.type_input_data() == 'info':
-                        self.get_session_info()
-                    if self.type_input_data() == 'data':
-                        self.get_data()
-            except Exception:
-                print('Неизветный тип возвращаемых данных')
+        #self.get_session_info()
+        try:
+            while True:
+                if self.type_input_data() == 'info':
+                    self.get_session_info()
+                if self.type_input_data() == 'data':
+                    self.get_data()
+        except Exception:
+            print('Unknown reserving data type')
 
     def listen_data(self):
         return (str(self.channel.recv(1024).decode("utf-8")))
@@ -97,29 +102,35 @@ class ClientThread(threading.Thread):
 
     def get_session_info(self):
 
-                try:
-                    print("-----------------------------------------------------------------")
-                    print(self.sess.ip + '---' + 'Пришла информация о соединении <-- ', self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
-                    self.sess.sql_ins_session()
-                    print(self.sess.ip + '---' + 'Отправляем подтверждениео о получении --> ',  self.details[0])
-                    self.channel.send(bytes('sess_ok ' + str(self.channel), 'utf-8'))
-                    time.sleep(1)
-                except Exception:
-                    print('Не удалось доставить данные, соединение потеряно c клиентом ', self.details[0])
+        try:
+            print("-----------------------------------------------------------------")
+            print(self.sess.ip + '---' + 'Reserve session data... <-- ',
+                  self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
+            self.sess.sql_ins_session()
+            print(self.sess.ip + '---' + 'Send confirm data... --> ', self.details[0])
+            self.channel.send(bytes('sess_ok ' + str(self.channel), 'utf-8'))
+            self.clients.append(self.thread)
+            print(self.clients)
+            print()
+            time.sleep(1)
+        except Exception:
+            print('Connection refuse...', self.details[0])
 
     def get_data(self):
-                try:
-                    print(self.sess.ip + '---' + 'Пришли полезные данные <-- ' , self.sess.data[5:])
-                    self.sess.sql_ins_data()
-                    print(self.sess.ip + '---' + 'Отправляем подтверждениео о получении --> ' ,  self.details[0])
-                    self.channel.send(bytes('data_ok', 'utf-8'))
-                    print("-----------------------------------------------------------------")
-                    time.sleep(1)
-                except Exception:
-                    print(self.sess.ip + '---' + 'Не удалось доставить данные, соединение потеряно c клиентом ', self.details[0])
+        try:
+            print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
+            self.sess.sql_ins_data()
+            print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
+            self.channel.send(bytes('data_ok', 'utf-8'))
+            print("-----------------------------------------------------------------")
+            time.sleep(1)
+
+        except Exception:
+            print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
 
 curr_sess = SessionData()
+
 
 class Server:
     run = True
@@ -127,6 +138,7 @@ class Server:
     server_socket.bind((host, port))
     server_socket.settimeout(1024)
     server_socket.listen(10)
+    sessions = []
 
     def init(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -140,50 +152,50 @@ class Server:
         if serv.server_socket._closed:
             self.init()
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print("++ Сервер запущен, ожидание подключения клиентов")
-        print('++ Адрес сервера: '+ host + ' Порт: ' + str(port))
+        print("++ TCP Server Start, waiting clients...")
+        print('++ Server address: ' + host + 'Port: ' + str(port))
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
         try:
             while True:
                 if self.run:
-                    channel, details = self.server_socket.accept()
-                    ClientThread(channel, details).start()
+                        channel, details = self.server_socket.accept()
+                        ClientThread(channel, details).start()
+
         except Exception:
-            print('---Сервер остановлен!----')
+            print('---Server Stopped!----')
 
 
     def stop_server(self):
 
         try:
-                self.server_socket.close()
-                self.run = False
-                exit()
+            self.run = False
+            print('-----User stop server-----')
+            exit(0)
         except Exception:
-                print('---не удалось остановить сервер!----')
+            print('---Fail Stop Server!!----')
+
 
 serv = Server()
 
+
 def cr_base():
+    global conn
     try:
         conn = sqlite3.connect('sessions.db')
         c = conn.cursor()
-        print('Выполняется инициализация базы данных...')
-        c.execute("CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)")
-        c.execute("CREATE TABLE IF NOT EXISTS DATA (ID integer PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)")
+        print("Initialization Database...")
+        c.execute('CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)')
+        c.execute('CREATE TABLE IF NOT EXISTS DATA (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)')
         conn.commit()
-        print('Инициализация завершена.')
+        print('Initialization complete.')
         conn.close()
     except Exception:
         conn.close()
-        print('Ошибка инициализации.')
+        print('Initialization Database Error!.')
         exit()
 
 
-
-
 base_locate = os.curdir
-
-
 
 if not os.path.exists(base_locate + '/sessions.db'):
     if not os.path.isfile(base_locate + '/sessions.db'):
