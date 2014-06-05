@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+
 __author__ = "Voronin Denis Albertovich"
 # connection-oriented server
 
@@ -120,7 +122,7 @@ class ClientThread(threading.Thread):
 curr_sess = SessionData()
 
 class Server:
-    run = False
+    run = True
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
     server_socket.settimeout(1024)
@@ -135,7 +137,6 @@ class Server:
 
     def start_server(self):
         self.run = True
-
         if serv.server_socket._closed:
             self.init()
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
@@ -189,5 +190,5 @@ if not os.path.exists(base_locate + '/sessions.db'):
         cr_base()
 
 #Запуск сервера
-serv.start_server()
+#serv.start_server()
 #serv.stop_server
