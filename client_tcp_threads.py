@@ -9,7 +9,7 @@ import time
 
 
 
-host = '192.168.1.11'
+host = '192.168.0.61'
 port = 1800
 data = 'client'
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -9,10 +9,10 @@ import os
 import datetime
 import threading
 import time
-import sys
+
 
 #Server options
-host = 'localhost'
+host = '192.168.0.61'
 port = 1800
 
 # We'll pickle a list of numbers:
