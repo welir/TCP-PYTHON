@@ -1,6 +1,6 @@
-__author__ = 'пользователь'
+__author__ = 'Voronin Denis Albertovich'
 
 def read_ini():
         f = open('ini')
-        for line in f:
-            line
+        data = f.readlines()
+        return data

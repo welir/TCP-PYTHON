@@ -13,6 +13,7 @@ import threading
 import time
 import hashlib
 import DM
+from INSTALL import read_ini
 # Server options
 host = '192.168.0.61'
 port = 1800
@@ -175,38 +176,32 @@ class Server:
 serv = Server()
 
 
-def cr_base():
-    global conn
-    try:
-        conn = sqlite3.connect('sessions.db')
-        c = conn.cursor()
-        print("Initialization Database...")
-        c.execute('CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)')
-        c.execute('CREATE TABLE IF NOT EXISTS DATA (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)')
-        c.execute('CREATE TABLE IF NOT EXISTS LOG (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, LOG_SYS TEXT)')
-        conn.commit()
-        print('Initialization complete.')
-        conn.close()
-    except Exception:
-        conn.close()
-        print('Initialization Database Error!.')
-        exit()
+# def cr_base():
+#     global conn
+#     try:
+#         conn = sqlite3.connect('sessions.db')
+#         c = conn.cursor()
+#         print("Initialization Database...")
+#         c.execute('CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)')
+#         c.execute('CREATE TABLE IF NOT EXISTS DATA (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)')
+#         c.execute('CREATE TABLE IF NOT EXISTS LOG (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, LOG_SYS TEXT)')
+#         conn.commit()
+#         print('Initialization complete.')
+#         conn.close()
+#     except Exception:
+#         conn.close()
+#         print('Initialization Database Error!.')
+#         exit()
 
 
 base_locate = os.curdir
 DataModul = DM.BASE('sessions.db')
-CreateBase = []
-for i in range(3):
-    CreateBase.append([])
-CreateBase[0] = 'CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)'
-CreateBase[1] = 'CREATE TABLE IF NOT EXISTS DATA (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)'
-CreateBase[2] = 'CREATE TABLE IF NOT EXISTS LOG (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, LOG_SYS TEXT)'
-
+CreateBase = read_ini()
 if not os.path.exists(base_locate + '/sessions.db'):
     if not os.path.isfile(base_locate + '/sessions.db'):
             DataModul.cr_base(CreateBase)
 
-
+#DataModul.del_base(); ###Удаление файла базы
 #Запуск сервера
-#serv.start_server()
-#serv.stop_server
+#serv.start_server()   ###Запуск    Сервера
+#serv.stop_server      ###Остановка Сервера

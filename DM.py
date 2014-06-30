@@ -2,6 +2,7 @@ from unittest.test.test_result import __init__
 
 __author__ = 'Voronin Denis Albertovich'
 import sqlite3
+import os
 import datetime
 base = 'sessions.db'
 class BASE:
@@ -27,6 +28,16 @@ class BASE:
             conn.close()
             print('Initialization Database Error!.')
             exit()
+
+    def del_base(self):
+        try:
+            os.remove(base)
+            print('Database removed.')
+        except EOFError:
+                print('Error removing base ')
+        except PermissionError:
+                print('Процесс не может получить доступ к базе, так как этот файл занят другим процессом,попробуте закрыть все программы, которые используют базу ')
+
 
 
     def sql_insert(self, table, values):
