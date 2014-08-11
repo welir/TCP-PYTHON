@@ -14,10 +14,11 @@ import time
 import hashlib
 import DM
 from INSTALL import read_ini
+from SysLog import AddToLog
 # Server options
+
 host = '192.168.0.61'
 port = 1800
-
 # We'll pickle a list of numbers:
 
 
@@ -43,7 +44,7 @@ class SessionData:
             conn.commit()
             conn.close()
         except sqlite3.DatabaseError:
-            print("Database Error" )
+            AddToLog("Database Error" )
 
     def sql_ins_data(self):
         try:
@@ -53,9 +54,9 @@ class SessionData:
                       ((datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'), self.data)))
             conn.commit()
             conn.close()
-            print(self.ip + '---' + "Writing to base ... Ок")
+            AddToLog(self.ip + '---' + "Writing to base ... Ок")
         except sqlite3.DatabaseError:
-            print(self.ip + '---' + "Error:", sqlite3.DatabaseError)
+            AddToLog(self.ip + '---' + "Error:", sqlite3.DatabaseError)
 
 
 
@@ -77,14 +78,15 @@ class ClientThread(threading.Thread):
 
     def run(self):
         #self.get_session_info()
-        try:
+        #try:
             while True:
                 if self.type_input_data() == 'info':
                     self.get_session_info()
                 if self.type_input_data() == 'data':
                     self.get_data()
-        except Exception:
-            print('Unknown reserving data type')
+        #except Exception:
+
+            ##AddToLog('Unknown reserving data type')
 
     def listen_data(self):
         return (str(self.channel.recv(1024).decode("utf-8")))
@@ -104,7 +106,7 @@ class ClientThread(threading.Thread):
     def get_session_info(self):
 
         try:
-            print("-----------------------------------------------------------------")
+            AddToLog("-----------------------------------------------------------------")
             print(self.sess.ip + '---' + 'Reserve session data... <-- ',
                   self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
             self.sess.sql_ins_session()
@@ -120,7 +122,7 @@ class ClientThread(threading.Thread):
             self.sess.sql_ins_data()
             print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
             self.channel.send(bytes('data_ok', 'utf-8'))
-            print("-----------------------------------------------------------------")
+            AddToLog("-----------------------------------------------------------------")
             time.sleep(1)
 
         except Exception:
@@ -149,10 +151,13 @@ class Server:
         self.run = True
         if serv.server_socket._closed:
             self.init()
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print("++ TCP Server Start, waiting clients...")
-        print('++ Server address: ' + host + '  Port: ' + str(port))
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+        AddToLog("++ TCP Server Start, waiting clients...")
+        AddToLog('++ Server address: ' + host + '  Port: ' + str(port))
+        AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+        # log.write('++ TCP Server Start, waiting clients...')
+        # log.write('++ Server address: ' + host + '  Port: ' + str(port))
+        # log.write('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+
         try:
             while True:
                 if self.run:
@@ -160,17 +165,17 @@ class Server:
                         ClientThread(channel, details).start()
 
         except Exception:
-            print('---Server Stopped!----')
+            AddToLog('---Server Stopped!----')
 
 
     def stop_server(self):
 
         try:
             self.run = False
-            print('-----User stop server-----')
+            AddToLog('-----User stop server-----')
             exit(0)
         except Exception:
-            print('---Fail Stop Server!!----')
+            AddToLog('---Fail Stop Server!!----')
 
 
 serv = Server()
@@ -181,16 +186,16 @@ serv = Server()
 #     try:
 #         conn = sqlite3.connect('sessions.db')
 #         c = conn.cursor()
-#         print("Initialization Database...")
+#         AddToLog("Initialization Database...")
 #         c.execute('CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)')
 #         c.execute('CREATE TABLE IF NOT EXISTS DATA (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)')
 #         c.execute('CREATE TABLE IF NOT EXISTS LOG (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, LOG_SYS TEXT)')
 #         conn.commit()
-#         print('Initialization complete.')
+#         AddToLog('Initialization complete.')
 #         conn.close()
 #     except Exception:
 #         conn.close()
-#         print('Initialization Database Error!.')
+#         AddToLog('Initialization Database Error!.')
 #         exit()
 
 

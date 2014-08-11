@@ -6,10 +6,14 @@ import socket
 import datetime
 import time
 import base64
+from SysLog import  AddToLog
 
-host = 'fhoc.no-ip.org'
+##host = 'fhoc.no-ip.org'
+host = '192.168.0.61'
 port = 1800
 data = 'client'
+send_interval = 2  # in seconds
+
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
@@ -19,10 +23,9 @@ def connect(to_host,to_port):
         print("[Connection established]")
 
     except Exception:
-        print('[Connection error:  '+ to_host + ":" + str(port)+']')
-        client_socket.close()
+        print('[Connection error:  ' + to_host + ":" + str(port)+']')
+        ##client_socket.close()
     pass
-
 
 def run():
                 global data
@@ -42,20 +45,8 @@ def run():
                     print("Waiting confirm main data..." + data_input)
                     client_socket.close()
                 print('---------------------------------------------------------------------------------------------')
-
-try:
+while True:
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connect(host, port)
-    while True:
-        run()
-        time.sleep(1)
-except Exception:
-    while True:
-        #try:
-            time.sleep(3)
-            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            connect(host,port)
-            run()
-      #  except Exception:
-        #    print('Connection Failed')
-
-
+    run()
+    time.sleep(send_interval)
