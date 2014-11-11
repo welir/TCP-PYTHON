@@ -35,19 +35,24 @@ class BASE:
         except PermissionError:
                 print('Процесс не может получить доступ к базе, так как этот файл занят другим процессом,попробуте закрыть все программы, которые используют базу ')
 
-
-
     def sql_insert(self, table, values):
-        try:
+
             conn = sqlite3.connect(self.base)
             c = conn.cursor()
-            c.execute('''INSERT INTO''' + table + '''VALUES''', values)
+            c.execute('''INSERT INTO ''' + table + ''' VALUES(:s1,:s2)''' , values)
             conn.commit()
             conn.close()
             print( '---' + "Writing to base ... Ок")
-        except sqlite3.DatabaseError:
-            print('---' + "Error:", sqlite3.DatabaseError)
 
+
+    def sql_update(self, table, Row,  where_, values):
+
+            conn = sqlite3.connect(self.base)
+            c = conn.cursor()
+            c.execute('''UPDATE ''' + table + ''' SET '''+ Row +'''  =  :v1 where   ''' + where_ +''' = :v2  ''' , values)
+            conn.commit()
+            conn.close()
+            print( '---' + "Update base ... Ок")
     # def sql_ins_data(self):
     #     try:
     #         conn = sqlite3.connect('sessions.db')

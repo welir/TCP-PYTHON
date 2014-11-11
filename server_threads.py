@@ -11,10 +11,12 @@ import os
 import datetime
 import threading
 import time
+import Relay_control
 import hashlib
 import DM
 from INSTALL import read_ini
 from SysLog import AddToLog
+
 # Server options
 
 host = '192.168.0.156'
@@ -64,6 +66,7 @@ class SessionData:
 class ClientThread(threading.Thread):
     sess = SessionData()
     clients = []
+    Relay = Relay_control.Relay(4)
     # Override Thread's __init__ method to accept the parameters needed:
 
     def __init__(self, channel, details):
@@ -123,12 +126,30 @@ class ClientThread(threading.Thread):
             self.sess.sql_ins_data()
             print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
             self.channel.send(bytes('data_ok', 'utf-8'))
+            self. data_parse()
             AddToLog("-----------------------------------------------------------------")
             time.sleep(1)
 
         except Exception:
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
+    def data_parse(self):
+        if self.sess.data == 'data//R1-on':
+            self.Relay.setPositionRelay(1,'on')
+        if self.sess.data == 'data//R1-off':
+            self.Relay.setPositionRelay(1,'off')
+        if self.sess.data == 'data//R2-on':
+            self.Relay.setPositionRelay(2,'on')
+        if self.sess.data == 'data//R2-off':
+            self.Relay.setPositionRelay(2,'off')
+        if self.sess.data == 'data//R3-on':
+            self.Relay.setPositionRelay(3,'on')
+        if self.sess.data == 'data//R3-off':
+            self.Relay.setPositionRelay(3,'off')
+        if self.sess.data == 'data//R4-on':
+            self.Relay.setPositionRelay(4,'on')
+        if self.sess.data == 'data//R4-off':
+            self.Relay.setPositionRelay(4,'off')
 
 curr_sess = SessionData()
 
@@ -209,5 +230,5 @@ if not os.path.exists(base_locate + '/sessions.db'):
 
 #DataModul.del_base(); ###Удаление файла базы
 #Запуск сервера
-serv.start_server()   ###Запуск    Сервера
+#serv.start_server()   ###Запуск    Сервера
 #serv.stop_server      ###Остановка Сервера
