@@ -18,9 +18,6 @@ class BASE:
             print("Initialization Database...")
             for i in range(len(exec_string)):
                 c.execute(exec_string[i])
-            # c.execute('CREATE TABLE IF NOT EXISTS SES (CLIENT_NAME TEXT, IP TEXT, DT DATE)')
-            # c.execute('CREATE TABLE IF NOT EXISTS DATA (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, DATA TEXT)')
-            # c.execute('CREATE TABLE IF NOT EXISTS LOG (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, DT DATE, LOG_SYS TEXT)')
             conn.commit()
             print('Initialization complete.')
             conn.close()

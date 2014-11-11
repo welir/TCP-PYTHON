@@ -6,10 +6,10 @@ import socket
 import datetime
 import time
 import base64
-from SysLog import  AddToLog
 
-##host = 'fhoc.no-ip.org'
-host = '192.168.0.61'
+
+host = 'fhoc.no-ip.org'
+##host = '192.168.0.61'
 port = 1800
 data = 'client'
 send_interval = 2  # in seconds
@@ -36,12 +36,18 @@ def run():
                 data_send = bytes('info//'+'pc_name:' + socket.gethostname() + 'ip:' + socket.gethostbyname(socket.gethostname()) + 'dt:' + (datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')), 'UTF-8')
                 print("Send session data: " + str(socket.gethostname() + 'ip:' + socket.gethostbyname(socket.gethostname()) + 'dt:' + (datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'))))
                 client_socket.send(data_send)
-                data_input = (client_socket.recv(1024).decode("UTF-8"))
+                try:
+                    data_input = (client_socket.recv(1024).decode("UTF-8"))
+                except Exception:
+                    pass
                 print("Waiting confirm session data...: ", data_input)
                 if data_input.find('sess_ok',0) != -1:
                     print("Send main data: " + str(data))
                     client_socket.send(bytes('data//' + str(data),'UTF-8'))
-                    data_input = (client_socket.recv(1024).decode("UTF-8"))
+                    try:
+                        data_input = (client_socket.recv(1024).decode("UTF-8"))
+                    except Exception:
+                        pass
                     print("Waiting confirm main data..." + data_input)
                     client_socket.close()
                 print('---------------------------------------------------------------------------------------------')

@@ -17,7 +17,7 @@ from INSTALL import read_ini
 from SysLog import AddToLog
 # Server options
 
-host = '192.168.0.61'
+host = '192.168.0.156'
 port = 1800
 # We'll pickle a list of numbers:
 
@@ -44,14 +44,14 @@ class SessionData:
             conn.commit()
             conn.close()
         except sqlite3.DatabaseError:
-            AddToLog("Database Error" )
+            AddToLog("Database Error")
 
     def sql_ins_data(self):
         try:
             conn = sqlite3.connect('sessions.db')
             c = conn.cursor()
             c.execute('''INSERT INTO DATA(dt,data) VALUES(:d2,:d3)''',
-                      ((datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'), self.data)))
+                      ((datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'),  self.data)))
             conn.commit()
             conn.close()
             AddToLog(self.ip + '---' + "Writing to base ... Ок")
@@ -106,6 +106,7 @@ class ClientThread(threading.Thread):
     def get_session_info(self):
 
         try:
+
             AddToLog("-----------------------------------------------------------------")
             print(self.sess.ip + '---' + 'Reserve session data... <-- ',
                   self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
@@ -208,5 +209,5 @@ if not os.path.exists(base_locate + '/sessions.db'):
 
 #DataModul.del_base(); ###Удаление файла базы
 #Запуск сервера
-#serv.start_server()   ###Запуск    Сервера
+serv.start_server()   ###Запуск    Сервера
 #serv.stop_server      ###Остановка Сервера
