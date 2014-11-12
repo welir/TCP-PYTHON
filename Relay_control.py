@@ -87,12 +87,12 @@ class Relay:
                 self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'on')
                 self.Base.sql_update('Relays', 'Position', 'Relay', ('on', 'R' + str(relay_num)))
-                self.set_gpio(relay_num,1)
+                self.set_gpio(relay_num,0)
             if position == 'off':
                 self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'off')
                 self.Base.sql_update('Relays', 'Position', 'Relay', ('off', 'R' + str(relay_num)))
-                self.set_gpio(relay_num,0)
+                self.set_gpio(relay_num,1)
         ## Установка положения по умолчанию всем реле
 
         def setPositionAll(self, position):
