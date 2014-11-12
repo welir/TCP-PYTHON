@@ -1,20 +1,55 @@
 __author__ = 'пользователь'
 import DM
-
+import RPi.GPIO as GPIO
 
 class Relay:
         Base = DM.BASE('sessions.db')
         Position = []
         Relays = []
         ## Инициализация класса
-
+		
         def __init__(self, relay_count, default_position='off'):
             self.Base.sql_drop('Relays')
             self.setRelayCount(relay_count, default_position)
             #self.setPositionAll(default_position)
             self.printaRelays()
-
-        def printaRelays(self):
+			
+		def init_gpio(self):
+		    GPIO.setwarnings(False)
+            GPIO.cleanup()
+			GPIO.setmode(GPIO.BOARD)
+			
+		def set_gpio(self, num_relay, status):
+			if  (num_relay == 1):
+				if status == 1: 
+			       GPIO.setup(11, GPIO.OUT)
+			       GPIO.output(11, True)
+                 else:
+				   GPIO.setup(11, GPIO.OUT)
+			       GPIO.output(11, False)	
+			if  (num_relay == 2 ):
+				if status == 1: 
+			       GPIO.setup(12, GPIO.OUT)
+			       GPIO.output(12, True)
+                 else:
+				   GPIO.setup(12, GPIO.OUT)
+			       GPIO.output(12, False)	
+			if  (num_relay == 3):
+				if status == 1: 
+			       GPIO.setup(15, GPIO.OUT)
+			       GPIO.output(15, True)
+                 else:
+				   GPIO.setup(15, GPIO.OUT)
+			       GPIO.output(15, False)	
+            if  (num_relay == 4):
+				if status == 1: 
+			       GPIO.setup(16, GPIO.OUT)
+			       GPIO.output(16, True)
+                 else:
+				   GPIO.setup(16, GPIO.OUT)
+			       GPIO.output(16, False)		
+				   
+         def printaRelays(self):
             print(self.Relays)
             print(self.Position)
 
