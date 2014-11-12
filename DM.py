@@ -44,6 +44,14 @@ class BASE:
             conn.close()
             print( '---' + "Writing to base ... Ок")
 
+    def sql_drop(self, table):
+
+            conn = sqlite3.connect(self.base)
+            c = conn.cursor()
+            c.execute('''DELETE FROM ''' + table)
+            conn.commit()
+            conn.close()
+            print( '---' + 'Delete from Table ' + table + '... Ок')
 
     def sql_update(self, table, Row,  where_, values):
 

@@ -114,7 +114,7 @@ class ClientThread(threading.Thread):
             print(self.sess.ip + '---' + 'Reserve session data... <-- ',
                   self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
             self.sess.sql_ins_session()
-            print(self.sess.ip + '---' + 'Send confirm data... --> ', self.details[0])
+            print(self.sess.ip + '---' + 'Send confirm data... --> ' , self.details[0])
             self.channel.send(bytes('sess_ok ' + str(self.channel), 'utf-8'))
             time.sleep(1)
         except Exception:
@@ -125,7 +125,7 @@ class ClientThread(threading.Thread):
             print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
             self.sess.sql_ins_data()
             print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
-            self.channel.send(bytes('data_ok', 'utf-8'))
+            #self.channel.send(bytes('data_ok', 'utf-8'))
             self. data_parse()
             AddToLog("-----------------------------------------------------------------")
             time.sleep(1)
@@ -136,20 +136,49 @@ class ClientThread(threading.Thread):
     def data_parse(self):
         if self.sess.data == 'data//R1-on':
             self.Relay.setPositionRelay(1,'on')
+            self.channel.send(bytes('R1-' + self.Relay.Position[0], 'utf-8'))
+            print('R1-' + self.Relay.Position[0])
         if self.sess.data == 'data//R1-off':
             self.Relay.setPositionRelay(1,'off')
+            self.channel.send(bytes('R1-' + self.Relay.Position[0], 'utf-8'))
+            print('R1-' + self.Relay.Position[0])
         if self.sess.data == 'data//R2-on':
             self.Relay.setPositionRelay(2,'on')
+            self.channel.send(bytes('R2-' + self.Relay.Position[1], 'utf-8'))
+            print('R2-' + self.Relay.Position[1])
         if self.sess.data == 'data//R2-off':
             self.Relay.setPositionRelay(2,'off')
+            self.channel.send(bytes('R2-' + self.Relay.Position[1], 'utf-8'))
+            print('R2-' + self.Relay.Position[1])
         if self.sess.data == 'data//R3-on':
             self.Relay.setPositionRelay(3,'on')
+            self.channel.send(bytes('R3-' + self.Relay.Position[2], 'utf-8'))
+            print('R3-' + self.Relay.Position[2])
         if self.sess.data == 'data//R3-off':
             self.Relay.setPositionRelay(3,'off')
+            self.channel.send(bytes('R3-' + self.Relay.Position[2], 'utf-8'))
+            print('R3-' + self.Relay.Position[2])
         if self.sess.data == 'data//R4-on':
             self.Relay.setPositionRelay(4,'on')
+            self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
+            print('R4-' + self.Relay.Position[3])
         if self.sess.data == 'data//R4-off':
             self.Relay.setPositionRelay(4,'off')
+            self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
+            print('R4-' + self.Relay.Position[3])
+
+        if self.sess.data == 'data//R1-status':
+            self.channel.send(bytes('data//R1-' + self.Relay.Position[0], 'utf-8'))
+            print('data//R1-' + self.Relay.Position[0])
+        if self.sess.data == 'data//R2-status':
+            self.channel.send(bytes('data//R2-' + self.Relay.Position[1], 'utf-8'))
+            print('data//R2-' + self.Relay.Position[1])
+        if self.sess.data == 'data//R3-status':
+            self.channel.send(bytes('data//R3-' + self.Relay.Position[2], 'utf-8'))
+            print('data//R3-' + self.Relay.Position[2])
+        if self.sess.data == 'data//R4-status':
+            self.channel.send(bytes('data//R4-' + self.Relay.Position[3], 'utf-8'))
+            print('data//R4-' + self.Relay.Position[3])
 
 curr_sess = SessionData()
 
@@ -158,14 +187,12 @@ class Server:
     run = True
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
-    server_socket.settimeout(1024)
     server_socket.listen(10)
     sessions = []
 
     def init(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((host, port))
-        self.server_socket.settimeout(1024)
         self.server_socket.listen(10)
 
 

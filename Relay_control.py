@@ -9,6 +9,7 @@ class Relay:
         ## Инициализация класса
 
         def __init__(self, relay_count, default_position='off'):
+            self.Base.sql_drop('Relays')
             self.setRelayCount(relay_count, default_position)
             #self.setPositionAll(default_position)
             self.printaRelays()
@@ -23,6 +24,7 @@ class Relay:
 
             self.Relays.append('R' + str(len(self.Relays) + 1))
             self.Position.append(position)
+            self.printaRelays()
             try:
                 self.Base.sql_insert('RELAYS', ('R' + str(len(self.Relays)), position))
             except:
@@ -38,7 +40,6 @@ class Relay:
         ## Установка количества реле в системе
 
         def setRelayCount(self, count, position):
-
                 for i in range(count):
                     self.addRelay(position)
 
@@ -47,17 +48,16 @@ class Relay:
         def setPositionRelay(self, relay_num, position):
 
             if position == 'on':
+                self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'on')
-                self.Base.sql_update('Relays','Position','Relay',('on','R' + str(relay_num )))
+                self.Base.sql_update('Relays', 'Position', 'Relay', ('on', 'R' + str(relay_num)))
             if position == 'off':
+                self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'off')
-                self.Base.sql_update('Relays','Position','Relay',('off','R' + str(relay_num)))
+                self.Base.sql_update('Relays', 'Position', 'Relay', ('off', 'R' + str(relay_num)))
 
         ## Установка положения по умолчанию всем реле
 
         def setPositionAll(self, position):
             for i in range(len(self.Relays)):
                 self.setPositionRelay(i, position)
-
-
-
