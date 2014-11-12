@@ -13,6 +13,7 @@ class Relay:
             self.setRelayCount(relay_count, default_position)
             #self.setPositionAll(default_position)
             self.printaRelays()
+			self.init_gpio()
 			
 		def init_gpio(self):
 		    GPIO.setwarnings(False)
@@ -86,11 +87,12 @@ class Relay:
                 self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'on')
                 self.Base.sql_update('Relays', 'Position', 'Relay', ('on', 'R' + str(relay_num)))
+				self.set_gpio(relay_num,1)
             if position == 'off':
                 self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'off')
                 self.Base.sql_update('Relays', 'Position', 'Relay', ('off', 'R' + str(relay_num)))
-
+                self.set_gpio(relay_num,0)
         ## Установка положения по умолчанию всем реле
 
         def setPositionAll(self, position):
