@@ -83,8 +83,8 @@ class ClientThread(threading.Thread):
         #self.get_session_info()
         #try:
             while True:
-                if self.type_input_data() == 'info':
-                    self.get_session_info()
+               # if self.type_input_data() == 'info':
+               #     self.get_session_info()
                 if self.type_input_data() == 'data':
                     self.get_data()
         #except Exception:
@@ -125,60 +125,15 @@ class ClientThread(threading.Thread):
             print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
             self.sess.sql_ins_data()
             print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
-            #self.channel.send(bytes('data_ok', 'utf-8'))
-            self. data_parse()
+            self.channel.send(bytes('data_ok', 'utf-8'))
             AddToLog("-----------------------------------------------------------------")
+
             time.sleep(1)
 
         except Exception:
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
-    def data_parse(self):
-        if self.sess.data == 'data//R1-on':
-            self.Relay.setPositionRelay(1,'on')
-            self.channel.send(bytes('R1-' + self.Relay.Position[0], 'utf-8'))
-            print('R1-' + self.Relay.Position[0])
-        if self.sess.data == 'data//R1-off':
-            self.Relay.setPositionRelay(1,'off')
-            self.channel.send(bytes('R1-' + self.Relay.Position[0], 'utf-8'))
-            print('R1-' + self.Relay.Position[0])
-        if self.sess.data == 'data//R2-on':
-            self.Relay.setPositionRelay(2,'on')
-            self.channel.send(bytes('R2-' + self.Relay.Position[1], 'utf-8'))
-            print('R2-' + self.Relay.Position[1])
-        if self.sess.data == 'data//R2-off':
-            self.Relay.setPositionRelay(2,'off')
-            self.channel.send(bytes('R2-' + self.Relay.Position[1], 'utf-8'))
-            print('R2-' + self.Relay.Position[1])
-        if self.sess.data == 'data//R3-on':
-            self.Relay.setPositionRelay(3,'on')
-            self.channel.send(bytes('R3-' + self.Relay.Position[2], 'utf-8'))
-            print('R3-' + self.Relay.Position[2])
-        if self.sess.data == 'data//R3-off':
-            self.Relay.setPositionRelay(3,'off')
-            self.channel.send(bytes('R3-' + self.Relay.Position[2], 'utf-8'))
-            print('R3-' + self.Relay.Position[2])
-        if self.sess.data == 'data//R4-on':
-            self.Relay.setPositionRelay(4,'on')
-            self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
-            print('R4-' + self.Relay.Position[3])
-        if self.sess.data == 'data//R4-off':
-            self.Relay.setPositionRelay(4,'off')
-            self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
-            print('R4-' + self.Relay.Position[3])
 
-        if self.sess.data == 'data//R1-status':
-            self.channel.send(bytes('data//R1-' + self.Relay.Position[0], 'utf-8'))
-            print('data//R1-' + self.Relay.Position[0])
-        if self.sess.data == 'data//R2-status':
-            self.channel.send(bytes('data//R2-' + self.Relay.Position[1], 'utf-8'))
-            print('data//R2-' + self.Relay.Position[1])
-        if self.sess.data == 'data//R3-status':
-            self.channel.send(bytes('data//R3-' + self.Relay.Position[2], 'utf-8'))
-            print('data//R3-' + self.Relay.Position[2])
-        if self.sess.data == 'data//R4-status':
-            self.channel.send(bytes('data//R4-' + self.Relay.Position[3], 'utf-8'))
-            print('data//R4-' + self.Relay.Position[3])
 
 curr_sess = SessionData()
 
