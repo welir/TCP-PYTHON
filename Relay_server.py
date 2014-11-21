@@ -4,13 +4,13 @@ import server_threads
 host = '192.168.0.156'
 port = 1800
 
+
 class Relay_client_thread(server_threads.ClientThread):
       def get_data(self):
         try:
             print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
             self.sess.sql_ins_data()
             print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
-            self.channel.send(bytes('data_ok', 'utf-8'))
             self. data_parse()
         except Exception:
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
@@ -61,19 +61,21 @@ class Relay_client_thread(server_threads.ClientThread):
         if self.sess.data == 'data//R4-status\r\n':
             self.channel.send(bytes('data//R4-' + self.Relay.Position[3], 'utf-8'))
             print('data//R4-' + self.Relay.Position[3])
-
+        if self.sess.data == 'data//status\r\n':
+            self.channel.send(bytes('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] +'R3-'+ self.Relay.Position[2] + 'R4-'  +  self.Relay.Position[3], 'utf-8'))
+            print('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] +'R3-'+ self.Relay.Position[2] + 'R4-'  +  self.Relay.Position[3])
 
 class Server_relay(server_threads.Server):
+
     def start_server(self):
         self.run = True
-        if serv.server_socket._closed:
+        if servRel.server_socket._closed:
             self.init()
+
+        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
         print("++ TCP Server Start, waiting clients...")
         print('++ Server address: ' + host + '  Port: ' + str(port))
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        # log.write('++ TCP Server Start, waiting clients...')
-        # log.write('++ Server address: ' + host + '  Port: ' + str(port))
-        # log.write('+++++++++++++++++++++++++++++++++++++++++++++++++++')
 
         try:
             while True:
@@ -84,8 +86,8 @@ class Server_relay(server_threads.Server):
         except Exception:
             print('---Server Stopped!----')
 
-serv = Server_relay()
+servRel = Server_relay()
 
 
 
-serv.start_server()
+servRel.start_server()
