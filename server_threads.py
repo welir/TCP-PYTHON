@@ -11,7 +11,6 @@ import os
 import datetime
 import threading
 import time
-import Relay_control
 import hashlib
 import DM
 from INSTALL import read_ini
@@ -66,7 +65,7 @@ class SessionData:
 class ClientThread(threading.Thread):
     sess = SessionData()
     clients = []
-    Relay = Relay_control.Relay(4)
+
     # Override Thread's __init__ method to accept the parameters needed:
 
     def __init__(self, channel, details):

@@ -1,11 +1,13 @@
 __author__ = 'Voronin Denis Albertovich'
 import server_threads
+import Relay_control
 
 host = '192.168.0.156'
 port = 1800
 
 
 class Relay_client_thread(server_threads.ClientThread):
+      Relay = Relay_control.Relay(4)
       def get_data(self):
         try:
             print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
@@ -49,6 +51,16 @@ class Relay_client_thread(server_threads.ClientThread):
             self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
             print('R4-' + self.Relay.Position[3])
 
+        if self.sess.data == 'data//relays-off\r\n':
+            self.Relay.setPositionAll('off')
+            print('data//relays-off')
+            self.channel.send(bytes('relays-off', 'utf-8'))
+
+        if self.sess.data == 'data//relays-on\r\n':
+            self.Relay.setPositionAll('on')
+            print('data//relays-on')
+            self.channel.send(bytes('relays-on', 'utf-8'))
+
         if self.sess.data == 'data//R1-status\r\n':
             self.channel.send(bytes('data//R1-' + self.Relay.Position[0], 'utf-8'))
             print('data//R1-' + self.Relay.Position[0])
@@ -61,9 +73,10 @@ class Relay_client_thread(server_threads.ClientThread):
         if self.sess.data == 'data//R4-status\r\n':
             self.channel.send(bytes('data//R4-' + self.Relay.Position[3], 'utf-8'))
             print('data//R4-' + self.Relay.Position[3])
+
         if self.sess.data == 'data//status\r\n':
             self.channel.send(bytes('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] +'R3-'+ self.Relay.Position[2] + 'R4-'  +  self.Relay.Position[3], 'utf-8'))
-            print('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] +'R3-'+ self.Relay.Position[2] + 'R4-'  +  self.Relay.Position[3])
+            print('data//R1-' + self.Relay.Position[0] + ' R2-' + self.Relay.Position[1]  + ' R3-'+ self.Relay.Position[2] + ' R4-' + self.Relay.Position[3])
 
 class Server_relay(server_threads.Server):
 
