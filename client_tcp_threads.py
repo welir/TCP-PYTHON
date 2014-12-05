@@ -8,8 +8,8 @@ import time
 import base64
 
 
-host = 'fhoc.no-ip.org'
-##host = '192.168.0.61'
+##host = 'fhoc.no-ip.org'
+host = '192.168.0.156'
 port = 1800
 data = 'client'
 send_interval = 2  # in seconds
@@ -24,7 +24,7 @@ def connect(to_host,to_port):
 
     except Exception:
         print('[Connection error:  ' + to_host + ":" + str(port)+']')
-        ##client_socket.close()
+        client_socket.close()
     pass
 
 def run():

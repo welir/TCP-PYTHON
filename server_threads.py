@@ -4,7 +4,6 @@
 __author__ = "Voronin Denis Albertovich"
 # connection-oriented server
 
-
 import socket
 import sqlite3
 import os
@@ -18,9 +17,8 @@ from SysLog import AddToLog
 
 # Server options
 
-host = '192.168.0.156'
-port = 1800
-# We'll pickle a list of numbers:
+
+
 
 
 class SessionData:
@@ -80,15 +78,15 @@ class ClientThread(threading.Thread):
 
     def run(self):
         #self.get_session_info()
-        #try:
+        try:
             while True:
-               # if self.type_input_data() == 'info':
-               #     self.get_session_info()
+                if self.type_input_data() == 'info':
+                    self.get_session_info()
                 if self.type_input_data() == 'data':
                     self.get_data()
-        #except Exception:
+        except Exception:
+            AddToLog('Unknown reserving data type')
 
-            ##AddToLog('Unknown reserving data type')
 
     def listen_data(self):
         return (str(self.channel.recv(1024).decode("utf-8")))
@@ -129,15 +127,19 @@ class ClientThread(threading.Thread):
 
             time.sleep(1)
 
+
         except Exception:
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
-
+    def data_parse(self):
+        pass
 
 curr_sess = SessionData()
 
 
 class Server:
+    host = '192.168.0.156'
+    port = 1800
     run = True
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
@@ -146,20 +148,19 @@ class Server:
 
     def init(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((host, port))
+        self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
 
 
     def start_server(self):
+
         self.run = True
         if serv.server_socket._closed:
             self.init()
         AddToLog("++ TCP Server Start, waiting clients...")
-        AddToLog('++ Server address: ' + host + '  Port: ' + str(port))
+        AddToLog('++ Server address: ' + self.host + '  Port: ' + str(self.port))
         AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        # log.write('++ TCP Server Start, waiting clients...')
-        # log.write('++ Server address: ' + host + '  Port: ' + str(port))
-        # log.write('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+
 
         try:
             while True:

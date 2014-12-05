@@ -1,6 +1,6 @@
 __author__ = 'пользователь'
 import DM
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 
 class Relay:
         Base = DM.BASE('sessions.db')
@@ -14,42 +14,42 @@ class Relay:
             self.setRelayCount(relay_count, default_position)
             self.setPositionAll(default_position)
             self.printaRelays()
-            self.init_gpio()
+            #self.init_gpio()
 			
-        def init_gpio(self):
-            GPIO.setwarnings(False)
-            GPIO.cleanup()
-            GPIO.setmode(GPIO.BOARD)
-
-        def set_gpio(self, num_relay, status):
-                if  (num_relay == 1):
-                    if status == 1:
-                        GPIO.setup(11, GPIO.OUT)
-                        GPIO.output(11, True)
-                    else:
-                        GPIO.setup(11, GPIO.OUT)
-                        GPIO.output(11, False)
-                if  (num_relay == 2 ):
-                    if status == 1:
-                        GPIO.setup(12, GPIO.OUT)
-                        GPIO.output(12, True)
-                    else:
-                        GPIO.setup(12, GPIO.OUT)
-                        GPIO.output(12, False)
-                if  (num_relay == 3):
-                    if status == 1:
-                        GPIO.setup(15, GPIO.OUT)
-                        GPIO.output(15, True)
-                    else:
-                        GPIO.setup(15, GPIO.OUT)
-                        GPIO.output(15, False)
-                if  (num_relay == 4):
-                    if status == 1:
-                        GPIO.setup(16, GPIO.OUT)
-                        GPIO.output(16, True)
-                    else:
-                        GPIO.setup(16, GPIO.OUT)
-                        GPIO.output(16, False)
+        # def init_gpio(self):
+        #     GPIO.setwarnings(False)
+        #     GPIO.cleanup()
+        #     GPIO.setmode(GPIO.BOARD)
+        #
+        # def set_gpio(self, num_relay, status):
+        #         if  (num_relay == 1):
+        #             if status == 1:
+        #                 GPIO.setup(11, GPIO.OUT)
+        #                 GPIO.output(11, True)
+        #             else:
+        #                 GPIO.setup(11, GPIO.OUT)
+        #                 GPIO.output(11, False)
+        #         if  (num_relay == 2 ):
+        #             if status == 1:
+        #                 GPIO.setup(12, GPIO.OUT)
+        #                 GPIO.output(12, True)
+        #             else:
+        #                 GPIO.setup(12, GPIO.OUT)
+        #                 GPIO.output(12, False)
+        #         if  (num_relay == 3):
+        #             if status == 1:
+        #                 GPIO.setup(15, GPIO.OUT)
+        #                 GPIO.output(15, True)
+        #             else:
+        #                 GPIO.setup(15, GPIO.OUT)
+        #                 GPIO.output(15, False)
+        #         if  (num_relay == 4):
+        #             if status == 1:
+        #                 GPIO.setup(16, GPIO.OUT)
+        #                 GPIO.output(16, True)
+        #             else:
+        #                 GPIO.setup(16, GPIO.OUT)
+        #                 GPIO.output(16, False)
 
         def printaRelays(self):
             print(self.Relays)
@@ -88,12 +88,12 @@ class Relay:
                 self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'on')
                 self.Base.sql_update('Relays', 'Position', 'Relay', ('on', 'R' + str(relay_num)))
-                self.set_gpio(relay_num, 0)
+                #self.set_gpio(relay_num, 0)
             if position == 'off':
                 self.Position.pop(relay_num - 1)
                 self.Position.insert(relay_num - 1, 'off')
                 self.Base.sql_update('Relays', 'Position', 'Relay', ('off', 'R' + str(relay_num)))
-                self.set_gpio(relay_num, 1)
+                #self.set_gpio(relay_num, 1)
         ## Установка положения по умолчанию всем реле
 
         def setPositionAll(self, position):

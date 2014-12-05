@@ -1,13 +1,23 @@
 __author__ = 'Voronin Denis Albertovich'
+
 import server_threads
 import Relay_control
+from SysLog import AddToLog
 
-host = '192.168.0.156'
-port = 1800
 
 
 class Relay_client_thread(server_threads.ClientThread):
       Relay = Relay_control.Relay(4)
+
+      def run(self):
+        #self.get_session_info()
+        try:
+            while True:
+                if self.type_input_data() == 'data':
+                    self.get_data()
+        except Exception:
+            AddToLog('Unknown reserving data type')
+
       def get_data(self):
         try:
             print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
@@ -87,7 +97,7 @@ class Server_relay(server_threads.Server):
 
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
         print("++ TCP Server Start, waiting clients...")
-        print('++ Server address: ' + host + '  Port: ' + str(port))
+        print('++ Server address: ' + self.host + '  Port: ' + str(self.port))
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
 
         try:
@@ -100,7 +110,5 @@ class Server_relay(server_threads.Server):
             print('---Server Stopped!----')
 
 servRel = Server_relay()
-
-
 
 servRel.start_server()
