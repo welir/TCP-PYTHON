@@ -5,7 +5,7 @@ import Relay_control
 from SysLog import AddToLog
 
 
-count_relay = 4
+count_relay = 7000
 
 class Relay_client_thread(server_threads.ClientThread):
       Relay = Relay_control.Relay(count_relay)
