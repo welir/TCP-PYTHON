@@ -29,10 +29,13 @@ class Relay_client_thread(server_threads.ClientThread):
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
       def data_parse(self):
+        s = 'data//'
 
         if self.sess.data == 'data//status\r\n':
-            self.channel.send(bytes('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] + 'R3-' + self.Relay.Position[2] + 'R4-' + self.Relay.Position[3], 'utf-8'))
-            print('data//R1-' + self.Relay.Position[0] + ' R2-' + self.Relay.Position[1] + ' R3-' + self.Relay.Position[2] + ' R4-' + self.Relay.Position[3])
+                for i in range(1, count_relay + 1):
+                    s += 'R' + str(i)+'-'+  self.Relay.Position[i - 1]
+                self.channel.send(bytes(s,'utf-8'))
+                print(s)
 
         for i in range(1, count_relay + 1):
             if self.sess.data == 'data//R'+ str(i) +'-on\r\n':
