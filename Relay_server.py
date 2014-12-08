@@ -5,9 +5,10 @@ import Relay_control
 from SysLog import AddToLog
 
 
+count_relay = 4
 
 class Relay_client_thread(server_threads.ClientThread):
-      Relay = Relay_control.Relay(4)
+      Relay = Relay_control.Relay(count_relay)
 
       def run(self):
         #self.get_session_info()
@@ -28,38 +29,21 @@ class Relay_client_thread(server_threads.ClientThread):
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
       def data_parse(self):
-        if self.sess.data == 'data//R1-on\r\n':
-            self.Relay.setPositionRelay(1,'on')
-            self.channel.send(bytes('R1-' + self.Relay.Position[0], 'utf-8'))
-            print('R1-' + self.Relay.Position[0])
-        if self.sess.data == 'data//R1-off\r\n':
-            self.Relay.setPositionRelay(1,'off')
-            self.channel.send(bytes('R1-' + self.Relay.Position[0], 'utf-8'))
-            print('R1-' + self.Relay.Position[0])
-        if self.sess.data == 'data//R2-on\r\n':
-            self.Relay.setPositionRelay(2,'on')
-            self.channel.send(bytes('R2-' + self.Relay.Position[1], 'utf-8'))
-            print('R2-' + self.Relay.Position[1])
-        if self.sess.data == 'data//R2-off\r\n':
-            self.Relay.setPositionRelay(2,'off')
-            self.channel.send(bytes('R2-' + self.Relay.Position[1], 'utf-8'))
-            print('R2-' + self.Relay.Position[1])
-        if self.sess.data == 'data//R3-on\r\n':
-            self.Relay.setPositionRelay(3,'on')
-            self.channel.send(bytes('R3-' + self.Relay.Position[2], 'utf-8'))
-            print('R3-' + self.Relay.Position[2])
-        if self.sess.data == 'data//R3-off\r\n':
-            self.Relay.setPositionRelay(3,'off')
-            self.channel.send(bytes('R3-' + self.Relay.Position[2], 'utf-8'))
-            print('R3-' + self.Relay.Position[2])
-        if self.sess.data == 'data//R4-on\r\n':
-            self.Relay.setPositionRelay(4,'on')
-            self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
-            print('R4-' + self.Relay.Position[3])
-        if self.sess.data == 'data//R4-off\r\n':
-            self.Relay.setPositionRelay(4,'off')
-            self.channel.send(bytes('R4-' + self.Relay.Position[3], 'utf-8'))
-            print('R4-' + self.Relay.Position[3])
+
+        if self.sess.data == 'data//status\r\n':
+            self.channel.send(bytes('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] + 'R3-' + self.Relay.Position[2] + 'R4-' + self.Relay.Position[3], 'utf-8'))
+            print('data//R1-' + self.Relay.Position[0] + ' R2-' + self.Relay.Position[1] + ' R3-' + self.Relay.Position[2] + ' R4-' + self.Relay.Position[3])
+
+        for i in range(1, count_relay + 1):
+            if self.sess.data == 'data//R'+ str(i) +'-on\r\n':
+                 self.Relay.setPositionRelay(i,'on')
+                 self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
+                 print('R'+str(i)+'-' + self.Relay.Position[i - 1])
+
+            if self.sess.data == 'data//R'+ str(i) +'-off\r\n':
+                 self.Relay.setPositionRelay(i,'off')
+                 self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
+                 print('R'+str(i)+'-' + self.Relay.Position[i - 1])
 
         if self.sess.data == 'data//relays-off\r\n':
             self.Relay.setPositionAll('off')
@@ -71,22 +55,12 @@ class Relay_client_thread(server_threads.ClientThread):
             print('data//relays-on')
             self.channel.send(bytes('relays-on', 'utf-8'))
 
-        if self.sess.data == 'data//R1-status\r\n':
-            self.channel.send(bytes('data//R1-' + self.Relay.Position[0], 'utf-8'))
-            print('data//R1-' + self.Relay.Position[0])
-        if self.sess.data == 'data//R2-status\r\n':
-            self.channel.send(bytes('data//R2-' + self.Relay.Position[1], 'utf-8'))
-            print('data//R2-' + self.Relay.Position[1])
-        if self.sess.data == 'data//R3-status\r\n':
-            self.channel.send(bytes('data//R3-' + self.Relay.Position[2], 'utf-8'))
-            print('data//R3-' + self.Relay.Position[2])
-        if self.sess.data == 'data//R4-status\r\n':
-            self.channel.send(bytes('data//R4-' + self.Relay.Position[3], 'utf-8'))
-            print('data//R4-' + self.Relay.Position[3])
+        for i in range(count_relay):
+            if self.sess.data == 'data//R'+str(i)+'-status\r\n':
+                self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1], 'utf-8'))
+                print('data//R'+str(i)+'-' + self.Relay.Position[i-1])
 
-        if self.sess.data == 'data//status\r\n':
-            self.channel.send(bytes('data//R1-' + self.Relay.Position[0] + 'R2-' + self.Relay.Position[1] +'R3-'+ self.Relay.Position[2] + 'R4-'  +  self.Relay.Position[3], 'utf-8'))
-            print('data//R1-' + self.Relay.Position[0] + ' R2-' + self.Relay.Position[1]  + ' R3-'+ self.Relay.Position[2] + ' R4-' + self.Relay.Position[3])
+        self.sess.data = ''
 
 class Server_relay(server_threads.Server):
 
