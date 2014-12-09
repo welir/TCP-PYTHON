@@ -5,7 +5,7 @@ import Relay_control
 from SysLog import AddToLog
 
 
-count_relay = 7000
+count_relay = 4
 
 class Relay_client_thread(server_threads.ClientThread):
       Relay = Relay_control.Relay(count_relay)
@@ -42,28 +42,30 @@ class Relay_client_thread(server_threads.ClientThread):
                  self.Relay.setPositionRelay(i,'on')
                  self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
                  print('R'+str(i)+'-' + self.Relay.Position[i - 1])
-
+                 self.sess.data = ''
             if self.sess.data == 'data//R'+ str(i) +'-off\r\n':
                  self.Relay.setPositionRelay(i,'off')
                  self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
                  print('R'+str(i)+'-' + self.Relay.Position[i - 1])
+                 self.sess.data = ''
 
         if self.sess.data == 'data//relays-off\r\n':
             self.Relay.setPositionAll('off')
             print('data//relays-off')
             self.channel.send(bytes('relays-off', 'utf-8'))
-
+            self.sess.data = ''
         if self.sess.data == 'data//relays-on\r\n':
             self.Relay.setPositionAll('on')
             print('data//relays-on')
             self.channel.send(bytes('relays-on', 'utf-8'))
+            self.sess.data = ''
 
         for i in range(count_relay):
             if self.sess.data == 'data//R'+str(i)+'-status\r\n':
                 self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1], 'utf-8'))
                 print('data//R'+str(i)+'-' + self.Relay.Position[i-1])
+                self.sess.data = ''
 
-        self.sess.data = ''
 
 class Server_relay(server_threads.Server):
 
