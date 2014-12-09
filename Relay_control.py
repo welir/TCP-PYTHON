@@ -11,10 +11,11 @@ class Relay:
         def __init__(self, relay_count, default_position='off'):
 
             self.Base.sql_drop('Relays')
+            self.init_gpio()
             self.setRelayCount(relay_count, default_position)
             self.setPositionAll(default_position)
             self.printaRelays()
-            self.init_gpio()
+
 			
         def init_gpio(self):
             GPIO.setwarnings(False)
