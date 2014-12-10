@@ -58,6 +58,7 @@ class Relay_client_thread(server_threads.ClientThread):
             self.Relay.setPositionAll('on')
             print('data//relays-on')
             self.channel.send(bytes('relays-on', 'utf-8'))
+
             self.sess.data = ''
 
         for i in range(count_relay):
@@ -68,12 +69,10 @@ class Relay_client_thread(server_threads.ClientThread):
 
 
 class Server_relay(server_threads.Server):
-
+    host = '192.168.0.156'
+    port = 1800
     def start_server(self):
         self.run = True
-        if servRel.server_socket._closed:
-            self.init()
-
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
         print("++ TCP Server Start, waiting clients...")
         print('++ Server address: ' + self.host + '  Port: ' + str(self.port))
@@ -88,6 +87,6 @@ class Server_relay(server_threads.Server):
         except Exception:
             print('---Server Stopped!----')
 
-servRel = Server_relay()
+servRel = Server_relay('192.168.0.156', 1800)
 
 servRel.start_server()

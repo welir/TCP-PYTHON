@@ -4,8 +4,7 @@ __author__ = 'Voronin Denis Albertovich'
 import server_threads
 
 from SysLog import AddToLog
-host = '192.168.0.156'
-port = 1900
+
 
 
 
@@ -33,21 +32,21 @@ class GPS_client_thread(server_threads.ClientThread):
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
       def data_parse(self):
-        if self.sess.data[0:15] == 'data//GPS-status':
+        if self.sess.data[0:16] == 'data//GPS-status':
             self.channel.send(bytes('GPS-OK', 'utf-8'))
             print('GPS-OK')
 
 
 class Server_gps(server_threads.Server):
-
+    host = '192.168.0.156'
+    port = 1900
     def start_server(self):
         self.run = True
-        if servGps.server_socket._closed:
-            self.init()
+
 
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
         print("++ TCP Server Start, waiting clients...")
-        print('++ Server address: ' + host + '  Port: ' + str(port))
+        print('++ Server address: ' + self.host + '  Port: ' + str(self.port))
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
 
         try:
@@ -59,6 +58,6 @@ class Server_gps(server_threads.Server):
         except Exception:
             print('---Server Stopped!----')
 
-servGps = Server_gps()
+servGps = Server_gps('192.168.0.156', 1900)
 
 servGps.start_server()

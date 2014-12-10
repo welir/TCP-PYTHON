@@ -138,15 +138,14 @@ curr_sess = SessionData()
 
 
 class Server:
-    host = '192.168.0.156'
-    port = 1800
+
     run = True
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((host, port))
-    server_socket.listen(10)
+
     sessions = []
 
-    def init(self):
+    def __init__(self, host = '127.0.0.1', port = 1800):
+        self.host = host
+        self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
@@ -155,8 +154,6 @@ class Server:
     def start_server(self):
 
         self.run = True
-        if serv.server_socket._closed:
-            self.init()
         AddToLog("++ TCP Server Start, waiting clients...")
         AddToLog('++ Server address: ' + self.host + '  Port: ' + str(self.port))
         AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
@@ -182,7 +179,7 @@ class Server:
             AddToLog('---Fail Stop Server!!----')
 
 
-serv = Server()
+
 
 
 # def cr_base():
