@@ -2,7 +2,7 @@ __author__ = 'Voronin Denis Albertovich'
 
 
 import server_threads
-
+import  datetime
 from SysLog import AddToLog
 
 
@@ -24,17 +24,17 @@ class GPS_client_thread(server_threads.ClientThread):
 
       def get_data(self):
         try:
-            print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
+            print(str(datetime.datetime.now()) +self.sess.ip + '---' + '  Reserve main data...<-- ', self.sess.data[5:])
             self.sess.sql_ins_data()
-            print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
+            print(str(datetime.datetime.now()) +  self.sess.ip + '---' + '  Send confirm data...  --> ', self.details[0])
             self. data_parse()
         except Exception:
-            print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
+            print(str(datetime.datetime.now()) +  self.sess.ip + '---' + '  Connection refuse...', self.details[0])
 
       def data_parse(self):
         if self.sess.data[0:16] == 'data//GPS-status':
-            self.channel.send(bytes('GPS-OK', 'utf-8'))
-            print('GPS-OK')
+            self.channel.send(bytes( 'GPS-OK', 'utf-8'))
+            print(str(datetime.datetime.now()) + '  GPS-OK')
 
 
 class Server_gps(server_threads.Server):
@@ -44,10 +44,10 @@ class Server_gps(server_threads.Server):
         self.run = True
 
 
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print("++ TCP Server Start, waiting clients...")
-        print('++ Server address: ' + self.host + '  Port: ' + str(self.port))
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+        print(str(datetime.datetime.now()) + '  +++++++++++++++++++++++++++++++++++++++++++++++++++')
+        print(str(datetime.datetime.now()) + "  ++ TCP Server Start, waiting clients...")
+        print(str(datetime.datetime.now()) + '  ++ Server address: ' + self.host + '  Port: ' + str(self.port))
+        print(str(datetime.datetime.now()) + '  +++++++++++++++++++++++++++++++++++++++++++++++++++')
 
         try:
             while True:
