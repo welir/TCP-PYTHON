@@ -1,4 +1,4 @@
-from unittest.test.test_result import __init__
+# -*- coding: utf-8 -*-
 
 __author__ = 'Voronin Denis Albertovich'
 import sqlite3
