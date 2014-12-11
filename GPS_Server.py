@@ -58,6 +58,6 @@ class Server_gps(server_threads.Server):
         except Exception:
             print('---Server Stopped!----')
 
-servGps = Server_gps(server_threads.get_my_ip(), 1900)
+servGps = Server_gps('178.62.102.58', 1900)
 
 servGps.start_server()
