@@ -4,7 +4,6 @@ import server_threads
 import Relay_control
 from SysLog import AddToLog
 
-
 count_relay = 4
 
 class Relay_client_thread(server_threads.ClientThread):
@@ -71,6 +70,9 @@ class Relay_client_thread(server_threads.ClientThread):
 class Server_relay(server_threads.Server):
     host = '192.168.0.156'
     port = 1800
+
+
+
     def start_server(self):
         self.run = True
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++')

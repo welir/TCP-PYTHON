@@ -14,6 +14,12 @@ import hashlib
 import DM
 from INSTALL import read_ini
 from SysLog import AddToLog
+import http.client
+
+def get_my_ip():
+    conn = http.client.HTTPConnection("ifconfig.me")
+    conn.request("GET", "/ip")
+    return conn.getresponse().read()
 
 # Server options
 
@@ -143,7 +149,7 @@ class Server:
 
     sessions = []
 
-    def __init__(self, host = '127.0.0.1', port = 1800):
+    def __init__(self, host = get_my_ip(), port = 1800):
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
