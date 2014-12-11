@@ -11,4 +11,4 @@ def todo_list():
     output = template('templates/maketable', rows = result)
     return output
 
-run()
+run(port = 8989, host = '178.62.102.58' )
