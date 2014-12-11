@@ -145,6 +145,13 @@ class Server:
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
 
+        base_locate = os.curdir
+        DataModul = DM.BASE('sessions.db')
+        CreateBase = read_ini()
+        if not os.path.exists(base_locate + '/sessions.db'):
+            if not os.path.isfile(base_locate + '/sessions.db'):
+                DataModul.cr_base(CreateBase)
+
     def start_server(self):
 
         self.run = True
@@ -193,13 +200,6 @@ class Server:
 #         AddToLog('Initialization Database Error!.')
 #         exit()
 
-
-base_locate = os.curdir
-DataModul = DM.BASE('sessions.db')
-CreateBase = read_ini()
-if not os.path.exists(base_locate + '/sessions.db'):
-    if not os.path.isfile(base_locate + '/sessions.db'):
-            DataModul.cr_base(CreateBase)
 
 #DataModul.del_base(); ###Удаление файла базы
 #Запуск сервера

@@ -8,7 +8,6 @@ from SysLog import AddToLog
 
 
 
-
 class GPS_client_thread(server_threads.ClientThread):
 
 
@@ -60,5 +59,12 @@ class Server_gps(server_threads.Server):
             print('---Server Stopped!----')
 
 servGps = Server_gps('178.62.102.58', 1900)
+
+base_locate = os.curdir
+DataModul = DM.BASE('sessions.db')
+CreateBase = read_ini()
+if not os.path.exists(base_locate + '/sessions.db'):
+    if not os.path.isfile(base_locate + '/sessions.db'):
+            DataModul.cr_base(CreateBase)
 
 servGps.start_server()
