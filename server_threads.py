@@ -137,7 +137,9 @@ class Server:
     run = True
 
     sessions = []
+
     base_locate = os.curdir
+
     def __init__(self, host = 'localhost', port = 1800):
         self.host = host
         self.port = port
