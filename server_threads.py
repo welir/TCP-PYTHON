@@ -150,8 +150,8 @@ class Server:
 
         DataModul = DM.BASE('sessions.db')
         CreateBase = read_ini()
-        if not os.path.exists(self.base_locate + '/sessions.db'):
-            if not os.path.isfile(self.base_locate + '/sessions.db'):
+        if not os.path.exists(self.base_locate + 'sessions.db'):
+            if not os.path.isfile(self.base_locate + 'sessions.db'):
                 DataModul.cr_base(CreateBase)
 
     def start_server(self):
