@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ebe8d4a3-af11-48f8-8bc3-d0c60d1e6594" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GPS_Server.py" afterPath="$PROJECT_DIR$/GPS_Server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WEBSERVICE.py" afterPath="$PROJECT_DIR$/WEBSERVICE.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server_threads.py" afterPath="$PROJECT_DIR$/server_threads.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -35,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="server_threads.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="server_threads.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server_threads.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2193" max-vertical-offset="3655">
-              <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7183099" vertical-offset="2142" max-vertical-offset="3655">
+              <caret line="153" column="28" selection-start-line="153" selection-start-column="28" selection-end-line="153" selection-end-column="28" />
               <folding>
                 <element signature="e#97#110#0" expanded="true" />
               </folding>
@@ -47,10 +47,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="INSTALL.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="INSTALL.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/INSTALL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.15962441" vertical-offset="0" max-vertical-offset="639">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
               <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding />
             </state>
@@ -60,7 +60,7 @@
       <file leaf-file-name="GPS_Server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GPS_Server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="1224">
+            <state vertical-scroll-proportion="0.0" vertical-offset="432" max-vertical-offset="1224">
               <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
               <folding>
                 <element signature="e#67#88#0" expanded="true" />
@@ -73,7 +73,7 @@
         <entry file="file://$PROJECT_DIR$/WEBSERVICE.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -125,10 +125,10 @@
         <option value="$PROJECT_DIR$/templates/maketable.tpl" />
         <option value="$PROJECT_DIR$/Test_bottle.py" />
         <option value="$PROJECT_DIR$/DM.py" />
-        <option value="$PROJECT_DIR$/WEBSERVICE.py" />
-        <option value="$PROJECT_DIR$/server_threads.py" />
         <option value="$PROJECT_DIR$/GPS_Server.py" />
         <option value="$PROJECT_DIR$/INSTALL.py" />
+        <option value="$PROJECT_DIR$/WEBSERVICE.py" />
+        <option value="$PROJECT_DIR$/server_threads.py" />
       </list>
     </option>
   </component>
@@ -818,7 +818,13 @@
       <option name="project" value="LOCAL" />
       <updated>1418306345549</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Alpha gps server">
+      <created>1418306591486</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1418306591486</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -1340,23 +1346,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEBSERVICE.py">
+    <entry file="file://$PROJECT_DIR$/INSTALL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server_threads.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2193" max-vertical-offset="3655">
-          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
-          <folding>
-            <element signature="e#97#110#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1370,11 +1364,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/INSTALL.py">
+    <entry file="file://$PROJECT_DIR$/WEBSERVICE.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15962441" vertical-offset="0" max-vertical-offset="639">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
+          <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server_threads.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7183099" vertical-offset="2142" max-vertical-offset="3655">
+          <caret line="153" column="28" selection-start-line="153" selection-start-column="28" selection-end-line="153" selection-end-column="28" />
+          <folding>
+            <element signature="e#97#110#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

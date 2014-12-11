@@ -3,7 +3,7 @@ from bottle import route, run, debug,  template ,  request
 
 @route('/todo')
 def todo_list():
-    conn = sqlite3.connect('sessions.db')
+    conn = sqlite3.connect('/var/www/sessions.db')
     c = conn.cursor()
     c.execute("SELECT id, data FROM DATA")
     result = c.fetchall()

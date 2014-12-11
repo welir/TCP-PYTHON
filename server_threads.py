@@ -138,7 +138,7 @@ class Server:
 
     sessions = []
 
-    base_locate = os.curdir
+    base_locate = '/var/www/'
 
     def __init__(self, host = 'localhost', port = 1800):
         self.host = host
