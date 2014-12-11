@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ebe8d4a3-af11-48f8-8bc3-d0c60d1e6594" name="Default" comment="Alpha gps server">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GPS_Server.py" afterPath="$PROJECT_DIR$/GPS_Server.py" />
+    <list default="true" id="ebe8d4a3-af11-48f8-8bc3-d0c60d1e6594" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server_threads.py" afterPath="$PROJECT_DIR$/server_threads.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -38,8 +37,8 @@
       <file leaf-file-name="server_threads.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server_threads.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.600939" vertical-offset="2115" max-vertical-offset="3621">
-              <caret line="147" column="31" selection-start-line="147" selection-start-column="31" selection-end-line="147" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.39906102" vertical-offset="2244" max-vertical-offset="3621">
+              <caret line="147" column="8" selection-start-line="147" selection-start-column="8" selection-end-line="147" selection-end-column="8" />
               <folding>
                 <element signature="e#97#110#0" expanded="true" />
               </folding>
@@ -795,7 +794,13 @@
       <option name="project" value="LOCAL" />
       <updated>1418295794733</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Alpha gps server">
+      <created>1418305606140</created>
+      <option name="number" value="00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1418305606140</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -1257,6 +1262,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.6808511" vertical-offset="7886" max-vertical-offset="9129">
           <caret line="519" column="52" selection-start-line="519" selection-start-column="52" selection-end-line="519" selection-end-column="52" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1345,8 +1351,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server_threads.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.600939" vertical-offset="2115" max-vertical-offset="3621">
-          <caret line="147" column="31" selection-start-line="147" selection-start-column="31" selection-end-line="147" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.39906102" vertical-offset="2244" max-vertical-offset="3621">
+          <caret line="147" column="8" selection-start-line="147" selection-start-column="8" selection-end-line="147" selection-end-column="8" />
           <folding>
             <element signature="e#97#110#0" expanded="true" />
           </folding>

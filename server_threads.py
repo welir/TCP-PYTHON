@@ -137,7 +137,7 @@ class Server:
     run = True
 
     sessions = []
-
+    base_locate = os.curdir
     def __init__(self, host = 'localhost', port = 1800):
         self.host = host
         self.port = port
@@ -145,11 +145,11 @@ class Server:
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
 
-        base_locate = os.curdir
+
         DataModul = DM.BASE('sessions.db')
         CreateBase = read_ini()
-        if not os.path.exists(base_locate + '/sessions.db'):
-            if not os.path.isfile(base_locate + '/sessions.db'):
+        if not os.path.exists(self.base_locate + '/sessions.db'):
+            if not os.path.isfile(self.base_locate + '/sessions.db'):
                 DataModul.cr_base(CreateBase)
 
     def start_server(self):
