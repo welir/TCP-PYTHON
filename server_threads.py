@@ -14,12 +14,8 @@ import hashlib
 import DM
 from INSTALL import read_ini
 from SysLog import AddToLog
-
+import WEBSERVICE
 # Server options
-
-
-
-
 
 class SessionData:
     client_name = 'unknown'
@@ -149,7 +145,7 @@ class Server:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
-
+        WEBSERVICE.todo_list()
 
     def start_server(self):
 
