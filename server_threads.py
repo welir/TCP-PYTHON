@@ -52,6 +52,34 @@ class SessionData:
         except sqlite3.DatabaseError:
             AddToLog(self.ip + '---' + "Error:", sqlite3.DatabaseError)
 
+    def sql_ins_user(self, name):
+
+            conn = sqlite3.connect('sessions.db')
+            c = conn.cursor()
+            c.execute('''INSERT INTO USERS(name) VALUES(:d2)''', (name,) )
+            conn.commit()
+            conn.close()
+            print(self.ip + '---' + "Writing to base ... Ок")
+            AddToLog(self.ip + '---' + "Writing to base ... Ок")
+
+            print(self.ip + '---' + "Error:" + (sqlite3.DatabaseError))
+            AddToLog(self.ip + '---' + "Error:", (sqlite3.DatabaseError))
+
+    def sql_ins_photo(self, name):
+
+            conn = sqlite3.connect('sessions.db')
+            c = conn.cursor()
+            c.execute('''INSERT INTO USERS(name) VALUES(:d2)''', (name,) )
+            conn.commit()
+            conn.close()
+            print(self.ip + '---' + "Writing to base ... Ок")
+            AddToLog(self.ip + '---' + "Writing to base ... Ок")
+
+            print(self.ip + '---' + "Error:" + (sqlite3.DatabaseError))
+            AddToLog(self.ip + '---' + "Error:", (sqlite3.DatabaseError))
+
+
+
 
 
 # Our thread class:
@@ -146,7 +174,6 @@ class Server:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
-
 
         DataModul = DM.BASE('sessions.db')
         CreateBase = read_ini()

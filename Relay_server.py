@@ -23,7 +23,7 @@ class Relay_client_thread(server_threads.ClientThread):
             print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
             self.sess.sql_ins_data()
             print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
-            self. data_parse()
+            self.data_parse()
         except Exception:
             print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 

@@ -7,38 +7,34 @@ import  datetime
 from SysLog import AddToLog
 
 
-
-
-class GPS_client_thread(server_threads.ClientThread):
+class FIXi_client_thread(server_threads.ClientThread):
 
 
       def run(self):
         #self.get_session_info()
-        try:
+
             while True:
                 if self.type_input_data() == 'data':
                     self.get_data()
-        except Exception:
-            AddToLog('Unknown reserving data type')
-
-
 
       def get_data(self):
-        try:
-            print(str(datetime.datetime.now()) +self.sess.ip + '---' + '  Reserve main data...<-- ', self.sess.data[5:])
+        #try:
+            print(str(datetime.datetime.now()) +  self.sess.ip + '---' + '  Reserve main data...<-- ', self.sess.data[5:])
             self.sess.sql_ins_data()
             print(str(datetime.datetime.now()) +  self.sess.ip + '---' + '  Send confirm data...  --> ', self.details[0])
             self. data_parse()
-        except Exception:
-            print(str(datetime.datetime.now()) +  self.sess.ip + '---' + '  Connection refuse...', self.details[0])
+       #except Exception:
+            #print(str(datetime.datetime.now()) +  self.sess.ip + '---' + '  Connection refuse...', self.details[0])
 
       def data_parse(self):
-        if self.sess.data[0:16] == 'data//GPS-status':
-            self.channel.send(bytes( 'GPS-OK', 'utf-8'))
-            print(str(datetime.datetime.now()) + '  GPS-OK')
+        if self.sess.data[0:14] == 'data//new_user':
+            name = self.sess.data[15:len(self.sess.data) - 2]
+            self.sess.sql_ins_user(name)
+            self.channel.send(bytes('user_added', 'utf-8'))
+            print(str(datetime.datetime.now()) + '  user_added')
 
 
-class Server_gps(server_threads.Server):
+class Server_fixi(server_threads.Server):
     host = '192.168.0.156'
     port = 1900
     def start_server(self):
@@ -54,13 +50,13 @@ class Server_gps(server_threads.Server):
             while True:
                 if self.run:
                         channel, details = self.server_socket.accept()
-                        GPS_client_thread(channel, details).start()
+                        FIXi_client_thread(channel, details).start()
 
         except Exception:
             print('---Server Stopped!----')
 
-servGps = Server_gps('192.168.0.156', 1900)
+servfix = Server_fixi('192.168.0.156', 2000)
 
 
 
-servGps.start_server()
+servfix.start_server()
