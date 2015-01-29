@@ -2,12 +2,12 @@
 __author__ = 'Voronin Denis Albertovich'
 
 
-import server_threads
+import Server
 import  datetime
 from SysLog import AddToLog
 
 
-class FIXi_client_thread(server_threads.ClientThread):
+class FIXi_client_thread(Server.ClientThread):
 
 
       def run(self):
@@ -34,7 +34,7 @@ class FIXi_client_thread(server_threads.ClientThread):
             print(str(datetime.datetime.now()) + '  user_added')
 
 
-class Server_fixi(server_threads.Server):
+class Server_fixi(Server.Server):
     host = '192.168.0.156'
     port = 1900
     def start_server(self):

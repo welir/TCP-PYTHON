@@ -2,14 +2,14 @@
 __author__ = 'Voronin Denis Albertovich'
 
 
-import server_threads
+import Server
 import  datetime
 from SysLog import AddToLog
 
 
 
 
-class GPS_client_thread(server_threads.ClientThread):
+class GPS_client_thread(Server.ClientThread):
 
 
       def run(self):
@@ -38,7 +38,7 @@ class GPS_client_thread(server_threads.ClientThread):
             print(str(datetime.datetime.now()) + '  GPS-OK')
 
 
-class Server_gps(server_threads.Server):
+class Server_gps(Server.Server):
     host = '192.168.0.156'
     port = 1900
     def start_server(self):

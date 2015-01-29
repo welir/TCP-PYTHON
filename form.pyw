@@ -1,7 +1,7 @@
 __author__ = 'пользователь'
 # -*- coding: utf-8 -*-
 
-import server_threads
+import Server
 #from PySide import QtGui
 import threading
 import sys
@@ -30,10 +30,10 @@ class AppGUI(object):
         threading.Thread(target=self.stop).start()
 
     def event(self):
-        server_threads.serv.start_server()
+        Server.serv.start_server()
 
     def stop(self):
-        server_threads.serv.stop_server()
+        Server.serv.stop_server()
 root = AppGUI()
 
 root.run()

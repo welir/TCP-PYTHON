@@ -1,12 +1,12 @@
 __author__ = 'Voronin Denis Albertovich'
 
-import server_threads
+import Server
 import Relay_control
 from SysLog import AddToLog
 
 count_relay = 4
 
-class Relay_client_thread(server_threads.ClientThread):
+class Relay_client_thread(Server.ClientThread):
       Relay = Relay_control.Relay(count_relay)
 
       def run(self):
@@ -20,12 +20,12 @@ class Relay_client_thread(server_threads.ClientThread):
 
       def get_data(self):
         try:
-            print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
+            AddToLog(self.sess.ip + '---' + 'Reserve main data...<-- ' + self.sess.data[5:])
             self.sess.sql_ins_data()
-            print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
+            AddToLog(self.sess.ip + '---' + 'Send confirm data...  --> ' + self.details[0])
             self.data_parse()
         except Exception:
-            print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
+             AddToLog(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
 
       def data_parse(self):
         s = 'data//'
@@ -34,28 +34,28 @@ class Relay_client_thread(server_threads.ClientThread):
                 for i in range(1, count_relay + 1):
                     s += 'R' + str(i)+'-'+  self.Relay.Position[i - 1]
                 self.channel.send(bytes(s,'utf-8'))
-                print(s)
+                AddToLog(s)
 
         for i in range(1, count_relay + 1):
             if self.sess.data == 'data//R'+ str(i) +'-on\r\n':
                  self.Relay.setPositionRelay(i,'on')
                  self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
-                 print('R'+str(i)+'-' + self.Relay.Position[i - 1])
+                 AddToLog('R'+str(i)+'-' + self.Relay.Position[i - 1])
                  self.sess.data = ''
             if self.sess.data == 'data//R'+ str(i) +'-off\r\n':
                  self.Relay.setPositionRelay(i,'off')
                  self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
-                 print('R'+str(i)+'-' + self.Relay.Position[i - 1])
+                 AddToLog('R'+str(i)+'-' + self.Relay.Position[i - 1])
                  self.sess.data = ''
 
         if self.sess.data == 'data//relays-off\r\n':
             self.Relay.setPositionAll('off')
-            print('data//relays-off')
+            AddToLog('data//relays-off')
             self.channel.send(bytes('relays-off', 'utf-8'))
             self.sess.data = ''
         if self.sess.data == 'data//relays-on\r\n':
             self.Relay.setPositionAll('on')
-            print('data//relays-on')
+            AddToLog('data//relays-on')
             self.channel.send(bytes('relays-on', 'utf-8'))
 
             self.sess.data = ''
@@ -63,11 +63,11 @@ class Relay_client_thread(server_threads.ClientThread):
         for i in range(count_relay):
             if self.sess.data == 'data//R'+str(i)+'-status\r\n':
                 self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1], 'utf-8'))
-                print('data//R'+str(i)+'-' + self.Relay.Position[i-1])
+                AddToLog('data//R'+str(i)+'-' + self.Relay.Position[i-1])
                 self.sess.data = ''
 
 
-class Server_relay(server_threads.Server):
+class Server_relay(Server.Server):
     host = '192.168.0.156'
     port = 1800
 
@@ -75,10 +75,10 @@ class Server_relay(server_threads.Server):
 
     def start_server(self):
         self.run = True
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print("++ TCP Server Start, waiting clients...")
-        print('++ Server address: ' + self.host + '  Port: ' + str(self.port))
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+        AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
+        AddToLog("++ TCP Server Start, waiting clients...")
+        AddToLog('++ Server address: ' + self.host + '  Port: ' + str(self.port))
+        AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
 
         try:
             while True:
@@ -87,7 +87,7 @@ class Server_relay(server_threads.Server):
                         Relay_client_thread(channel, details).start()
 
         except Exception:
-            print('---Server Stopped!----')
+            AddToLog('---Server Stopped!----')
 
 servRel = Server_relay('192.168.0.156', 1800)
 

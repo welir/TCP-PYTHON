@@ -4,6 +4,7 @@ __author__ = 'Voronin Denis Albertovich'
 import sqlite3
 import os
 import datetime
+from SysLog import AddToLog
 base = 'sessions.db'
 class BASE:
 
@@ -15,25 +16,25 @@ class BASE:
         try:
             conn = sqlite3.connect(base)
             c = conn.cursor()
-            print("Initialization Database...")
+            AddToLog("Initialization Database...")
             for i in range(len(exec_string)):
                 c.execute(exec_string[i])
             conn.commit()
-            print('Initialization complete.')
+            AddToLog('Initialization complete.')
             conn.close()
         except Exception:
             conn.close()
-            print('Initialization Database Error!.')
+            AddToLog('Initialization Database Error!.')
             exit()
 
     def del_base(self):
         try:
             os.remove(base)
-            print('Database removed.')
+            AddToLog('Database removed.')
         except EOFError:
-                print('Error removing base ')
+                AddToLog('Error removing base ')
         except PermissionError:
-                print('Процесс не может получить доступ к базе, так как этот файл занят другим процессом,попробуте закрыть все программы, которые используют базу ')
+                AddToLog('Процесс не может получить доступ к базе, так как этот файл занят другим процессом,попробуте закрыть все программы, которые используют базу ')
 
     def sql_insert(self, table, values):
 
@@ -42,7 +43,7 @@ class BASE:
             c.execute('''INSERT INTO ''' + table + ''' VALUES(:s1,:s2)''' , values)
             conn.commit()
             conn.close()
-            print( '---' + "Writing to base ... Ок")
+            AddToLog( '---' + "Writing to base ... Ок")
 
     def sql_drop(self, table):
 
@@ -51,7 +52,7 @@ class BASE:
             c.execute('''DELETE FROM ''' + table)
             conn.commit()
             conn.close()
-            print( '---' + 'Delete from Table ' + table + '... Ок')
+            AddToLog( '---' + 'Delete from Table ' + table + '... Ок')
 
     def sql_update(self, table, Row,  where_, values):
 
@@ -60,7 +61,8 @@ class BASE:
             c.execute('''UPDATE ''' + table + ''' SET '''+ Row +'''  =  :v1 where   ''' + where_ +''' = :v2  ''' , values)
             conn.commit()
             conn.close()
-            print( '---' + "Update base ... Ок")
+            AddToLog( '---' + "Update base ... Ок")
+
     # def sql_ins_data(self):
     #     try:
     #         conn = sqlite3.connect('sessions.db')
@@ -69,6 +71,6 @@ class BASE:
     #                   ((datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S'), self.data)))
     #         conn.commit()
     #         conn.close()
-    #         print(self.ip + '---' + "Writing to base ... Ок")
+    #         AddToLog(self.ip + '---' + "Writing to base ... Ок")
     #     except sqlite3.DatabaseError:
-    #         print(self.ip + '---' + "Error:", sqlite3.DatabaseError)
+    #         AddToLog(self.ip + '---' + "Error:", sqlite3.DatabaseError)

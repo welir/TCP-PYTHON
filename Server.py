@@ -50,7 +50,7 @@ class SessionData:
             conn.close()
             AddToLog(self.ip + '---' + "Writing to base ... Ок")
         except sqlite3.DatabaseError:
-            AddToLog(self.ip + '---' + "Error:", sqlite3.DatabaseError)
+            AddToLog(self.ip + '---' + "Error:" + sqlite3.DatabaseError)
 
     def sql_ins_user(self, name):
 
@@ -59,11 +59,11 @@ class SessionData:
             c.execute('''INSERT INTO USERS(name) VALUES(:d2)''', (name,) )
             conn.commit()
             conn.close()
-            print(self.ip + '---' + "Writing to base ... Ок")
+
             AddToLog(self.ip + '---' + "Writing to base ... Ок")
 
-            print(self.ip + '---' + "Error:" + (sqlite3.DatabaseError))
-            AddToLog(self.ip + '---' + "Error:", (sqlite3.DatabaseError))
+
+            AddToLog(self.ip + '---' + "Error:" + (sqlite3.DatabaseError))
 
     def sql_ins_photo(self, name):
 
@@ -72,11 +72,11 @@ class SessionData:
             c.execute('''INSERT INTO USERS(name) VALUES(:d2)''', (name,) )
             conn.commit()
             conn.close()
-            print(self.ip + '---' + "Writing to base ... Ок")
+
             AddToLog(self.ip + '---' + "Writing to base ... Ок")
 
-            print(self.ip + '---' + "Error:" + (sqlite3.DatabaseError))
-            AddToLog(self.ip + '---' + "Error:", (sqlite3.DatabaseError))
+
+            AddToLog(self.ip + '---' + "Error:" + (sqlite3.DatabaseError))
 
 
 
@@ -131,20 +131,20 @@ class ClientThread(threading.Thread):
         try:
 
             AddToLog("-----------------------------------------------------------------")
-            print(self.sess.ip + '---' + 'Reserve session data... <-- ',
+            AddToLog(self.sess.ip + '---' + 'Reserve session data... <-- ' +
                   self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
             self.sess.sql_ins_session()
-            print(self.sess.ip + '---' + 'Send confirm data... --> ' , self.details[0])
+            AddToLog(self.sess.ip + '---' + 'Send confirm data... --> ' + self.details[0])
             self.channel.send(bytes('sess_ok ' + str(self.channel), 'utf-8'))
             time.sleep(1)
         except Exception:
-            print('Connection refuse...', self.details[0])
+            AddToLog('Connection refuse...' + self.details[0])
 
     def get_data(self):
         try:
-            print(self.sess.ip + '---' + 'Reserve main data...<-- ', self.sess.data[5:])
+            AddToLog(self.sess.ip + '---' + 'Reserve main data...<-- ' + self.sess.data[5:])
             self.sess.sql_ins_data()
-            print(self.sess.ip + '---' + 'Send confirm data...  --> ', self.details[0])
+            AddToLog(self.sess.ip + '---' + 'Send confirm data...  --> ' + self.details[0])
             self.channel.send(bytes('data_ok', 'utf-8'))
             AddToLog("-----------------------------------------------------------------")
 
@@ -152,7 +152,7 @@ class ClientThread(threading.Thread):
 
 
         except Exception:
-            print(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
+            AddToLog(self.sess.ip + '---' + 'Connection refuse...' + self.details[0])
 
     def data_parse(self):
         pass
