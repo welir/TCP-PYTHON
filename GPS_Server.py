@@ -38,29 +38,6 @@ class GPS_client_thread(Server.ClientThread):
             print(str(datetime.datetime.now()) + '  GPS-OK')
 
 
-class Server_gps(Server.Server):
-    host = '192.168.0.156'
-    port = 1900
-    def start_server(self):
-        self.run = True
-
-
-        print(str(datetime.datetime.now()) + '  +++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print(str(datetime.datetime.now()) + "  ++ TCP Server Start, waiting clients...")
-        print(str(datetime.datetime.now()) + '  ++ Server address: ' + self.host + '  Port: ' + str(self.port))
-        print(str(datetime.datetime.now()) + '  +++++++++++++++++++++++++++++++++++++++++++++++++++')
-
-        try:
-            while True:
-                if self.run:
-                        channel, details = self.server_socket.accept()
-                        GPS_client_thread(channel, details).start()
-
-        except Exception:
-            print('---Server Stopped!----')
-
-servGps = Server_gps('192.168.0.156', 1900)
-
-
+servGps = Server.Server('192.168.0.156', 1900,  GPS_client_thread)
 
 servGps.start_server()

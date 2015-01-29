@@ -7,6 +7,7 @@ from SysLog import AddToLog
 count_relay = 4
 
 class Relay_client_thread(Server.ClientThread):
+
       Relay = Relay_control.Relay(count_relay)
 
       def run(self):
@@ -25,7 +26,7 @@ class Relay_client_thread(Server.ClientThread):
             AddToLog(self.sess.ip + '---' + 'Send confirm data...  --> ' + self.details[0])
             self.data_parse()
         except Exception:
-             AddToLog(self.sess.ip + '---' + 'Connection refuse...', self.details[0])
+             AddToLog(self.sess.ip + '---' + 'Connection refuse...' +  self.details[0])
 
       def data_parse(self):
         s = 'data//'
@@ -66,29 +67,6 @@ class Relay_client_thread(Server.ClientThread):
                 AddToLog('data//R'+str(i)+'-' + self.Relay.Position[i-1])
                 self.sess.data = ''
 
+ServRel = Server.Server('192.168.0.156', 1800, Relay_client_thread)
 
-class Server_relay(Server.Server):
-    host = '192.168.0.156'
-    port = 1800
-
-
-
-    def start_server(self):
-        self.run = True
-        AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-        AddToLog("++ TCP Server Start, waiting clients...")
-        AddToLog('++ Server address: ' + self.host + '  Port: ' + str(self.port))
-        AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
-
-        try:
-            while True:
-                if self.run:
-                        channel, details = self.server_socket.accept()
-                        Relay_client_thread(channel, details).start()
-
-        except Exception:
-            AddToLog('---Server Stopped!----')
-
-servRel = Server_relay('192.168.0.156', 1800)
-
-servRel.start_server()
+ServRel.start_server()

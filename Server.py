@@ -168,13 +168,13 @@ class Server:
 
     base_locate = os.curdir
 
-    def __init__(self, host = 'localhost', port = 1800):
+    def __init__(self, host = 'localhost', port = 1800, clientthread_ =None):
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(10)
-
+        self.ClientThread = clientthread_
         DataModul = DM.BASE('sessions.db')
         CreateBase = read_ini()
         if not os.path.exists(self.base_locate + '/sessions.db'):
@@ -184,6 +184,7 @@ class Server:
     def start_server(self):
 
         self.run = True
+        AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
         AddToLog("++ TCP Server Start, waiting clients...")
         AddToLog('++ Server address: ' + self.host + '  Port: ' + str(self.port))
         AddToLog('+++++++++++++++++++++++++++++++++++++++++++++++++++')
@@ -193,7 +194,7 @@ class Server:
             while True:
                 if self.run:
                         channel, details = self.server_socket.accept()
-                        ClientThread(channel, details).start()
+                        self.ClientThread(channel, details).start()
 
         except Exception:
             AddToLog('---Server Stopped!----')
