@@ -1,6 +1,6 @@
 __author__ = 'пользователь'
 import DM
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 class Relay:
         Base = DM.BASE('sessions.db')
