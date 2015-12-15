@@ -11,7 +11,7 @@ class Relay:
         def __init__(self, relay_count, default_position='off'):
 
             self.Base.sql_drop('Relays')
-            #self.init_gpio()
+            self.init_gpio()
             self.setRelayCount(relay_count, default_position)
             self.setPositionAll(default_position)
             self.printaRelays()
