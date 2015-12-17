@@ -112,7 +112,9 @@ class ClientThread(threading.Thread):
 
 
     def listen_data(self):
-        return (str(self.channel.recv(1024).decode("utf-8")))
+        answer = ((str(self.channel.recv(1024).decode("utf-8"))));
+        if (answer != ''):
+            return answer;
 
     def type_input_data(self):
 
