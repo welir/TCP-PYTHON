@@ -35,9 +35,9 @@ Temperature = 0
 
 def GetTempandVlaga(self):
     try:
-        while self.data[this.count] == 1:
+        while self.data[self.count] == 1:
             self.tmp = 1
-            self.count = this.count + 1
+            self.count = self.count + 1
 
         for i in range(0, 32):
             self.bit_count = 0
