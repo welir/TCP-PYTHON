@@ -35,58 +35,58 @@ Temperature = 0
 
 def GetTempandVlaga(self):
     try:
-        while this.data[this.count] == 1:
-            this.tmp = 1
-            this.count = this.count + 1
+        while self.data[this.count] == 1:
+            self.tmp = 1
+            self.count = this.count + 1
 
         for i in range(0, 32):
-            this.bit_count = 0
+            self.bit_count = 0
 
-            while data[this.count] == 0:
-                this.tmp = 1
-                this.count = this.count + 1
+            while self.data[self.count] == 0:
+               self.tmp = 1
+                self.count = self.count + 1
 
-            while data[count] == 1:
-                this.bit_count = this.bit_count + 1
-                this.count = this.count + 1
+            while self.data[count] == 1:
+                self.bit_count =self.bit_count + 1
+                self.count = self.count + 1
 
-            if bit_count > 3:
+            if self.bit_count > 3:
                 if i >= 0 and i < 8:
-                    this.HumidityBit = this.HumidityBit + "1"
+                    self.HumidityBit = self.HumidityBit + "1"
                 if i >= 16 and i < 24:
-                    this.TemperatureBit = this.TemperatureBit + "1"
+                    self.TemperatureBit = self.TemperatureBit + "1"
             else:
                 if i >= 0 and i < 8:
-                    this.HumidityBit = this.HumidityBit + "0"
+                    self.HumidityBit = self.HumidityBit + "0"
                 if i >= 16 and i < 24:
-                    this.TemperatureBit = this.TemperatureBit + "0"
+                    self.TemperatureBit = self.TemperatureBit + "0"
 
     except:
         return "ERR_RANGE"
 
     try:
         for i in range(0, 8):
-            this.bit_count = 0
+            self.bit_count = 0
 
-            while data[this.count] == 0:
-                this.tmp = 1
-                this.count = this.count + 1
+            while data[self.count] == 0:
+                self.tmp = 1
+                self.count = self.count + 1
 
-            while data[this.count] == 1:
-                this.bit_count = this.bit_count + 1
-                this.count = this.count + 1
+            while data[self.count] == 1:
+                self.bit_count = self.bit_count + 1
+                self.count = self.count + 1
 
-            if this.bit_count > 3:
-                this.crc = this.crc + "1"
+            if self.bit_count > 3:
+               self.crc = self.crc + "1"
             else:
-                this.crc = this.crc + "0"
+               self.crc = self.crc + "0"
     except:
         return "ERR_RANGE"
 
-    this.Humidity = bin2dec(this.HumidityBit)
-    this.Temperature = bin2dec(this.TemperatureBit)
+    self.Humidity = bin2dec(self.HumidityBit)
+    self.Temperature = bin2dec(self.TemperatureBit)
 
-    if int(this.Humidity) + int(this.Temperature) - int(bin2dec(crc)) == 0:
-        return "Humidity:" + this.Humidity + "%" + " "" Temperature:" + this.Temperature + "C"
+    if int(self.Humidity) + int(self.Temperature) - int(bin2dec(self.crc)) == 0:
+        return "Humidity:" + self.Humidity + "%" + " "" Temperature:" + self.Temperature + "C"
     else:
         return "ERR_CRC"
