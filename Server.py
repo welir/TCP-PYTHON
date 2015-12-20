@@ -134,7 +134,7 @@ class ClientThread(threading.Thread):
 
             AddToLog("-----------------------------------------------------------------")
             AddToLog(self.sess.ip + '---' + 'Reserve session data... <-- ' +
-                  self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
+            self.sess.client_name + ' ' + self.sess.dt + ' ' + self.sess.ip)
             self.sess.sql_ins_session()
             AddToLog(self.sess.ip + '---' + 'Send confirm data... --> ' + self.details[0])
             self.channel.send(bytes('sess_ok ' + str(self.channel), 'utf-8'))
@@ -147,7 +147,7 @@ class ClientThread(threading.Thread):
             AddToLog(self.sess.ip + '---' + 'Reserve main data...<-- ' + self.sess.data[5:])
             self.sess.sql_ins_data()
             AddToLog(self.sess.ip + '---' + 'Send confirm data...  --> ' + self.details[0])
-            self.channel.send(bytes('data_ok', 'utf-8'))
+            self.channel.send(bytes('data_ok'+"\r\n", 'utf-8'))
             AddToLog("-----------------------------------------------------------------")
 
             time.sleep(1)

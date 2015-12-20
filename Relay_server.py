@@ -40,12 +40,12 @@ class Relay_client_thread(Server.ClientThread):
         for i in range(1, count_relay + 1):
             if self.sess.data == 'data//R'+ str(i) +'-on\r\n':
                  self.Relay.setPositionRelay(i,'on')
-                 self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
+                 self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1]+"\r\n", 'utf-8'))
                  AddToLog('R'+str(i)+'-' + self.Relay.Position[i - 1])
                  self.sess.data = ''
             if self.sess.data == 'data//R'+ str(i) +'-off\r\n':
                  self.Relay.setPositionRelay(i,'off')
-                 self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1], 'utf-8'))
+                 self.channel.send(bytes('R'+ str(i) +'-' + self.Relay.Position[i - 1]+"\r\n", 'utf-8'))
                  AddToLog('R'+str(i)+'-' + self.Relay.Position[i - 1])
                  self.sess.data = ''
 
@@ -63,7 +63,7 @@ class Relay_client_thread(Server.ClientThread):
 
         for i in range(count_relay):
             if self.sess.data == 'data//R'+str(i)+'-status\r\n':
-                self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1], 'utf-8'))
+                self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1]+"\r\n", 'utf-8'))
                 AddToLog('data//R'+str(i)+'-' + self.Relay.Position[i-1])
                 self.sess.data = ''
 
