@@ -63,6 +63,7 @@ class Relay_client_thread(Server.ClientThread):
             self.sess.data = ''
         if self.sess.data == 'data//temp\r\n':
             self.channel.send(bytes(self.Tmpr.GetTempandVlaga,'utf-8'))
+            AddToLog(self.Tmpr.GetTempandVlaga)
         for i in range(count_relay):
             if self.sess.data == 'data//R'+str(i)+'-status\r\n':
                 self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1]+"\r\n", 'utf-8'))
