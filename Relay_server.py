@@ -3,12 +3,13 @@ __author__ = 'Voronin Denis Albertovich'
 import Server
 import Relay_control
 from SysLog import AddToLog
-
+import Tempered
 count_relay = 4
 
 class Relay_client_thread(Server.ClientThread):
 
       Relay = Relay_control.Relay(count_relay)
+      Tmpr = Tempered.TemperatureSensor
 
       def run(self):
         #self.get_session_info()
@@ -60,13 +61,14 @@ class Relay_client_thread(Server.ClientThread):
             self.channel.send(bytes('relays-on', 'utf-8'))
 
             self.sess.data = ''
-
+        if self.sess.data == 'data//temp\r\n':
+            self.channel.send(bytes(self.Tmpr.GetTempandVlaga,'utf-8'))
         for i in range(count_relay):
             if self.sess.data == 'data//R'+str(i)+'-status\r\n':
                 self.channel.send(bytes('data//R'+str(i)+'-' + self.Relay.Position[i-1]+"\r\n", 'utf-8'))
                 AddToLog('data//R'+str(i)+'-' + self.Relay.Position[i-1])
                 self.sess.data = ''
 
-ServRel = Server.Server('192.168.0.156', 1800, Relay_client_thread)
+ServRel = Server.Server('192.168.1.4', 1800, Relay_client_thread)
 
 ServRel.start_server()
