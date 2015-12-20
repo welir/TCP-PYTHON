@@ -46,7 +46,7 @@ def GetTempandVlaga(self):
                self.tmp = 1
                 self.count = self.count + 1
 
-            while self.data[count] == 1:
+            while self.data[self.count] == 1:
                 self.bit_count =self.bit_count + 1
                 self.count = self.count + 1
 
