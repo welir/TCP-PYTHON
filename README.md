@@ -16,7 +16,7 @@
     IN CLIENT script
         data = 'yow data'
 
-   # How run ?
+   # How Run ?
       if you use gui: Run script Form.py and click Start
       if you use console: uncomment string in script server_threads.py name #serv.start_server()  
 
