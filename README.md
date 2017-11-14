@@ -2,7 +2,8 @@
 
 # Description
 
-    Python TCP. Client server socket project.Client send data to server.Server save data to base
+    Python TCP. Client server socket project.
+    Client send data to server -- Server save data to base
     You can set parametrs in server and client projects:
 
 # Usage
