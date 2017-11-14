@@ -8,7 +8,7 @@
 
 # Usage
 
-  # Parametrs
+  # Params
     In CLIENT and SERVER SCRIPT
         host = 'yow host'
         port = 'port'
